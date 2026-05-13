@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --font-oswald: "Oswald", sans-serif;
+  --font-inter: "Inter", sans-serif;
+}
+
+:root {
+  --brand-orange: #d1824d;
+  --bg-dark: #0c0c0c;
+}
+
+@layer base {
+  body {
+    @apply font-inter bg-[#0c0c0c] text-white overflow-x-hidden;
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .condensed {
+    @apply font-oswald uppercase leading-[0.85] tracking-[-0.02em];
+  }
+
+  /* Persistent Vertical Grid Lines */
+  .grid-lines {
+    @apply fixed inset-0 pointer-events-none z-50 flex justify-between px-[5%];
+  }
+
+  .line {
+    @apply w-px h-full bg-white/10;
+  }
+
+  .bg-hero {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  /* FAQ Accordion Style */
+  .faq-content {
+    @apply max-h-0 overflow-hidden transition-[max-height] duration-300 ease-out;
+  }
+
+  .faq-item.active .faq-content {
+    @apply max-h-[200px];
+  }
+
+  .faq-item.active .faq-icon {
+    @apply rotate-45;
+  }
+
+  .scroll-line {
+    animation: scrollHint 2s infinite;
+  }
+}
+
+@keyframes scrollHint {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(20px); opacity: 0; }
+}
