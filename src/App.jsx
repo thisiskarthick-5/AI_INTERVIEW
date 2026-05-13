@@ -12,7 +12,7 @@ const GridLines = () => (
 const Navbar = () => (
   <nav className="fixed w-full z-[100] flex justify-between items-center px-10 py-8 mix-blend-difference">
     <div className="text-2xl font-bold tracking-tighter flex items-center gap-2">
-      <div className="w-6 h-6 border-2 border-white rotate-45"></div> NEXUS AI
+      <div className="w-6 h-6 border-2 border-white rotate-45"></div> VANTAGE AI
     </div>
     <div className="hidden md:flex gap-10 text-[10px] uppercase tracking-[0.2em] font-semibold">
       <a href="#about" className="hover:text-orange-400 transition">About Us</a>
@@ -41,13 +41,13 @@ const Hero = () => {
           opacity: 1 - (offset / 700)
         }}
       >
-        <p className="text-orange-500 font-bold tracking-[0.5em] uppercase text-xs mb-6">Autonomous Intelligence Layer</p>
+        <p className="text-orange-500 font-bold tracking-[0.5em] uppercase text-xs mb-6">AI-Powered Interview Coach</p>
         <h1 className="condensed text-[12vw] lg:text-[13rem]">
-          Intelligence<br />Reimagined
+          Master The<br />Interview
         </h1>
         <div className="mt-12 max-w-xl mx-auto">
           <p className="text-sm uppercase tracking-[0.3em] opacity-60 leading-loose">
-            Empowering the modern enterprise through cognitive synthesis and autonomous neural architecture.
+            Empowering students and job seekers to conquer anxiety and land their dream roles through high-fidelity AI simulations.
           </p>
         </div>
       </div>
@@ -66,21 +66,21 @@ const About = () => (
   <section id="about" className="py-32 px-10 relative z-10 border-t border-white/10">
     <div className="grid lg:grid-cols-2 gap-20">
       <div>
-        <p className="text-orange-500 font-bold tracking-[0.3em] uppercase text-xs mb-6">/ Our Mission</p>
-        <h2 className="condensed text-6xl lg:text-8xl mb-10">Unleashing<br />Potential.</h2>
+        <p className="text-orange-500 font-bold tracking-[0.3em] uppercase text-xs mb-6">/ Your Advantage</p>
+        <h2 className="condensed text-6xl lg:text-8xl mb-10">Confidence<br />Redefined.</h2>
       </div>
       <div className="flex flex-col justify-center">
         <p className="text-xl text-gray-400 leading-relaxed mb-8">
-          NEXUS AI was engineered to bridge the gap between data and action. We provide the cognitive foundation for businesses to scale beyond human limitations, transforming complexity into clarity.
+          VANTAGE AI was built to level the playing field for job seekers. Our platform provides the realistic practice and data-driven insights needed to transform nervous energy into professional poise.
         </p>
         <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-10">
           <div>
-            <h4 className="font-bold text-2xl">01. Insight</h4>
-            <p className="text-sm text-gray-500 mt-2">Unlocking hidden patterns within your enterprise data with 99.9% processing accuracy.</p>
+            <h4 className="font-bold text-2xl">01. Success</h4>
+            <p className="text-sm text-gray-500 mt-2">Users report a 4x increase in offer rates after completing our tailored preparation modules.</p>
           </div>
           <div>
-            <h4 className="font-bold text-2xl">02. Speed</h4>
-            <p className="text-sm text-gray-500 mt-2">Accelerating decision-making cycles from weeks to milliseconds through edge-computing.</p>
+            <h4 className="font-bold text-2xl">02. Growth</h4>
+            <p className="text-sm text-gray-500 mt-2">Personalized skill tracking that identifies and bridges your specific communication gaps.</p>
           </div>
         </div>
       </div>
@@ -106,19 +106,19 @@ const Technology = () => (
       
       <div className="grid md:grid-cols-3 gap-px bg-white/10 border border-white/10">
         <TechCard 
-          icon={<svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>}
-          title="Neural Synthesis"
-          description="Our proprietary LLM architecture synthesizes disparate data streams into actionable business intelligence."
+          icon={<svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>}
+          title="Voice Analysis"
+          description="Our AI evaluates your tone, pace, and filler word usage to ensure your delivery is authoritative and clear."
         />
         <TechCard 
-          icon={<svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>}
-          title="Adaptive Learning"
-          description="Systems that evolve with your organization, continuously refining their logic based on real-world outcomes."
+          icon={<svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>}
+          title="Cognitive Logic"
+          description="Deep analysis of your logic flow and problem-solving approach for technical and behavioral rounds."
         />
         <TechCard 
           icon={<svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>}
-          title="Autonomous Agents"
-          description="Deploy self-managing AI agents that handle complex workflows without constant human oversight."
+          title="Instant Feedback"
+          description="Receive a comprehensive performance report with actionable improvement tips immediately after each session."
         />
       </div>
     </div>
@@ -149,12 +149,12 @@ const FAQ = () => (
       <h2 className="condensed text-6xl mb-16">Questions</h2>
       <div className="space-y-4">
         <FAQItem 
-          question="How secure is my data on the platform?"
-          answer="We employ enterprise-grade AES-256 encryption and SOC2 Type II compliance standards to ensure your proprietary data remains completely private."
+          question="Can it help with specific technical interviews?"
+          answer="Absolutely. VANTAGE AI includes specialized modules for Software Engineering, Data Science, Product Management, and Finance, with domain-specific question banks."
         />
         <FAQItem 
-          question="Does it integrate with our existing stack?"
-          answer="NEXUS AI features 200+ native integrations including Salesforce, AWS, Slack, and Microsoft Azure, plus a robust REST API."
+          question="Is my practice data kept private?"
+          answer="Yes. Your practice sessions are 100% private. We do not share your recordings or feedback reports with potential employers or third parties."
         />
       </div>
     </div>
@@ -165,9 +165,9 @@ const Footer = () => (
   <footer className="bg-black py-20 px-10 border-t border-white/10 relative z-10">
     <div className="grid md:grid-cols-4 gap-12 mb-20">
       <div className="col-span-2">
-        <div className="text-4xl font-bold tracking-tighter mb-6">NEXUS AI</div>
+        <div className="text-4xl font-bold tracking-tighter mb-6">VANTAGE AI</div>
         <p className="max-w-xs text-gray-500 uppercase text-[10px] tracking-widest leading-loose">
-          Forging the future of enterprise intelligence through high-fidelity neural architecture. Clarity at scale.
+          Empowering the next generation of talent through high-fidelity AI interview simulations. Land your dream role.
         </p>
       </div>
       <div>
@@ -186,7 +186,7 @@ const Footer = () => (
       </div>
     </div>
     <div className="flex justify-between items-center pt-10 border-t border-white/5 text-[10px] text-gray-600 uppercase tracking-widest">
-      <p>&copy; 2024 NEXUS AI SYSTEMS INC.</p>
+      <p>&copy; 2024 VANTAGE AI SYSTEMS INC.</p>
     </div>
   </footer>
 );
