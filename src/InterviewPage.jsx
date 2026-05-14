@@ -88,6 +88,8 @@ const InterviewPage = ({ user, interviews, setInterviews }) => {
                 duration={`${interview.duration} mins`} 
                 score={interview.score} 
                 status={interview.status} 
+                feedback={interview.feedback}
+                suggestions={interview.suggestions}
               />
             ))
           ) : (

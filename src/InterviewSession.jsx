@@ -5,6 +5,7 @@ import { speak, cancelSpeech } from './services/voiceService';
 import { generateSystemPrompt } from './utils/promptUtils';
 import { useWhisper } from './hooks/useWhisper';
 import { formatTime } from './utils/formatUtils';
+import { evaluateInterview } from './services/evaluationService';
 
 const InterviewSession = ({ config, user, onEnd }) => {
   const [messages, setMessages] = useState([]);
@@ -12,6 +13,7 @@ const InterviewSession = ({ config, user, onEnd }) => {
   const [timer, setTimer] = useState(0);
   const [sessionId, setSessionId] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isEnding, setIsEnding] = useState(false);
   const [apiMessages, setApiMessages] = useState([]);
   
   const messagesEndRef = useRef(null);
@@ -30,7 +32,7 @@ const InterviewSession = ({ config, user, onEnd }) => {
       const initialApiMsgs = [{ role: 'system', content: systemPrompt }];
       setApiMessages(initialApiMsgs);
       
-      setMessages([{ role: 'ai', text: '...' }]);
+      setMessages([{ role: 'ai', text: 'Initializing...' }]);
       setIsProcessing(true);
 
       try {
@@ -58,7 +60,6 @@ const InterviewSession = ({ config, user, onEnd }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-
   // Handlers
   const handleVoiceToggle = async () => {
     const transcribedText = await toggleRecording();
@@ -77,7 +78,7 @@ const InterviewSession = ({ config, user, onEnd }) => {
 
     const newMsgs = [...messages, { role: 'user', text: userText }];
     const newApiMsgs = [...apiMessages, { role: 'user', content: userText }];
-    setMessages([...newMsgs, { role: 'ai', text: '...' }]);
+    setMessages([...newMsgs, { role: 'ai', text: 'typing' }]); // Internal tag for typing state
     setApiMessages(newApiMsgs);
 
     try {
@@ -92,16 +93,27 @@ const InterviewSession = ({ config, user, onEnd }) => {
   };
 
   const handleEndSession = async () => {
-    if (sessionId) {
-      const score = Math.floor(Math.random() * 41) + 60;
-      updateInterviewSession(sessionId, {
-        status: 'completed',
-        duration: Math.max(1, Math.ceil(timer / 60)),
-        score,
-        messages: apiMessages
-      }).catch(console.error);
+    setIsEnding(true);
+    cancelSpeech();
+    
+    try {
+      if (sessionId) {
+        const evaluation = await evaluateInterview(apiMessages, config);
+        await updateInterviewSession(sessionId, {
+          status: 'completed',
+          duration: Math.max(1, Math.ceil(timer / 60)),
+          score: evaluation.score,
+          feedback: evaluation.feedback,
+          suggestions: evaluation.suggestions,
+          messages: apiMessages
+        });
+      }
+    } catch (error) {
+      console.error('Final session update error:', error);
+    } finally {
+      setIsEnding(false);
+      onEnd();
     }
-    onEnd();
   };
 
   return (
@@ -119,8 +131,12 @@ const InterviewSession = ({ config, user, onEnd }) => {
         </div>
         <div className="flex items-center gap-6">
           <span className="font-oswald text-xl text-orange-500">{formatTime(timer)}</span>
-          <button onClick={handleEndSession} className="px-6 py-2 bg-white/10 hover:bg-red-500/20 text-gray-300 hover:text-red-500 border border-white/10 hover:border-red-500/50 transition text-[10px] uppercase font-bold tracking-widest rounded-full">
-            End Session
+          <button 
+            disabled={isEnding}
+            onClick={handleEndSession} 
+            className="px-6 py-2 bg-white/10 hover:bg-red-500/20 text-gray-300 hover:text-red-500 border border-white/10 hover:border-red-500/50 transition text-[10px] uppercase font-bold tracking-widest rounded-full disabled:opacity-50"
+          >
+            {isEnding ? 'Analyzing...' : 'End Session'}
           </button>
         </div>
       </div>
@@ -139,7 +155,15 @@ const InterviewSession = ({ config, user, onEnd }) => {
                   {msg.role === 'ai' ? 'Max' : 'Candidate'}
                 </span>
               </div>
-              <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+              {msg.text === 'typing' ? (
+                <div className="flex gap-1 py-2">
+                  <div className="w-1.5 h-1.5 bg-orange-500/50 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-1.5 h-1.5 bg-orange-500/50 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-1.5 h-1.5 bg-orange-500/50 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              ) : (
+                <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+              )}
             </div>
           </div>
         ))}
@@ -151,19 +175,19 @@ const InterviewSession = ({ config, user, onEnd }) => {
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto relative">
           <input 
             type="text" value={input} onChange={(e) => setInput(e.target.value)}
-            disabled={isProcessing}
+            disabled={isProcessing || isEnding}
             placeholder={isProcessing ? "Max is typing..." : "Type your response..."}
             className="w-full bg-white/5 border border-white/10 rounded-2xl pl-6 pr-32 py-4 text-white outline-none focus:border-orange-500 transition disabled:opacity-50"
           />
           <div className="absolute right-2 top-2 flex gap-2">
             <button 
-              type="button" onClick={handleVoiceToggle} disabled={isProcessing}
+              type="button" onClick={handleVoiceToggle} disabled={isProcessing || isEnding}
               className={`p-2 rounded-xl transition ${isRecording ? 'bg-red-500/20 text-red-500 animate-pulse' : 'hover:bg-white/10 text-gray-400'}`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
             </button>
             <button 
-              type="submit" disabled={isProcessing || !input.trim()}
+              type="submit" disabled={isProcessing || isEnding || !input.trim()}
               className="px-6 bg-orange-500 text-black font-bold uppercase tracking-widest text-[10px] rounded-xl hover:bg-orange-400 disabled:opacity-50"
             >
               Send
