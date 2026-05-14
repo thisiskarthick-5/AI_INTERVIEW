@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InterviewPage from './InterviewPage';
 import AnalyticsPage from './AnalyticsPage';
 import SettingsPage from './SettingsPage';
+import ResumePage from './ResumePage';
 import { getUserInterviews } from './services/interviewService';
 import StatCard from './components/common/StatCard';
 import ProgressBar from './components/common/ProgressBar';
@@ -196,6 +197,7 @@ const Dashboard = ({ user, onLogout }) => {
       )}
       
       {activeView === 'Interviews' && <InterviewPage user={user} interviews={interviews} setInterviews={setInterviews} refreshData={fetchInterviews} />}
+      {activeView === 'Resumes' && <ResumePage user={user} />}
       {activeView === 'Analytics' && <AnalyticsPage interviews={interviews} />}
       {activeView === 'Settings' && <SettingsPage user={user} onLogout={onLogout} />}
       </div>
