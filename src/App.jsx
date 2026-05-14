@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import LoginPage from './LoginPage';
+import Dashboard from './Dashboard';
 import { useAuth } from './contexts/AuthContext';
 
 const GridLines = () => (
@@ -193,30 +194,7 @@ const Footer = () => (
   </footer>
 );
 
-const Dashboard = ({ user, logout }) => (
-  <div className="min-h-screen flex flex-col relative z-10 p-10">
-    <nav className="flex justify-between items-center mb-20 border-b border-white/10 pb-6">
-      <div className="text-2xl font-bold tracking-tighter flex items-center gap-2">
-        <div className="w-6 h-6 border-2 border-white rotate-45"></div> VANTAGE AI
-      </div>
-      <button onClick={logout} className="text-sm font-bold uppercase tracking-widest hover:text-orange-500 transition">
-        Sign Out
-      </button>
-    </nav>
-    <div className="flex-1 flex flex-col justify-center">
-      <p className="text-orange-500 font-bold tracking-[0.3em] uppercase text-xs mb-6">/ Welcome Back</p>
-      <h2 className="condensed text-6xl lg:text-8xl mb-10">{user?.email || 'User'}</h2>
-      <p className="text-gray-400 text-xl max-w-2xl">
-        Your AI interview coach is ready. Prepare for your upcoming sessions, review past performance, or start a new mock interview.
-      </p>
-      <div className="mt-12">
-        <button className="bg-white text-black px-10 py-4 font-bold uppercase tracking-widest text-sm hover:bg-orange-500 transition">
-          Start New Session
-        </button>
-      </div>
-    </div>
-  </div>
-);
+
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -226,7 +204,7 @@ function App() {
     return (
       <div className="min-h-screen bg-[#0c0c0c]">
         <GridLines />
-        <Dashboard user={currentUser} logout={logout} />
+        <Dashboard user={currentUser} onLogout={logout} />
       </div>
     );
   }
