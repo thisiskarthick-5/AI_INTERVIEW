@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import InterviewPage from './InterviewPage';
+import AnalyticsPage from './AnalyticsPage';
 import { getUserInterviews } from './services/interviewService';
 import StatCard from './components/common/StatCard';
 import ProgressBar from './components/common/ProgressBar';
@@ -14,7 +15,7 @@ const Dashboard = ({ user, onLogout }) => {
   const [interviews, setInterviews] = useState([]);
   const [stats, setStats] = useState({ attended: 0, score: 0 });
 
-  useEffect(() => {
+  const fetchInterviews = () => {
     if (user?.uid) {
       getUserInterviews(user.uid).then(data => {
         setInterviews(data);
@@ -25,6 +26,10 @@ const Dashboard = ({ user, onLogout }) => {
         setStats({ attended: data.length, score: avgScore });
       }).catch(console.error);
     }
+  };
+
+  useEffect(() => {
+    fetchInterviews();
   }, [user]);
 
   return (
@@ -189,8 +194,8 @@ const Dashboard = ({ user, onLogout }) => {
       </div>
       )}
       
-      {activeView === 'Interviews' && <InterviewPage user={user} interviews={interviews} setInterviews={setInterviews} />}
-      {activeView === 'Analytics' && <div className="flex items-center justify-center h-64 border border-dashed border-white/10 rounded-2xl text-gray-500 text-sm tracking-widest uppercase">Analytics Coming Soon</div>}
+      {activeView === 'Interviews' && <InterviewPage user={user} interviews={interviews} setInterviews={setInterviews} refreshData={fetchInterviews} />}
+      {activeView === 'Analytics' && <AnalyticsPage interviews={interviews} />}
       {activeView === 'Settings' && <div className="flex items-center justify-center h-64 border border-dashed border-white/10 rounded-2xl text-gray-500 text-sm tracking-widest uppercase">Settings Coming Soon</div>}
       </div>
     </div>

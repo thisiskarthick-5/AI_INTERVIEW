@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getGroqChatCompletion } from './services/groqService';
+import { getGroqChatCompletion, getGroqChatStream } from './services/groqService';
 import { saveInterviewSession, updateInterviewSession } from './services/interviewService';
 import { speak, cancelSpeech } from './services/voiceService';
 import { generateSystemPrompt } from './utils/promptUtils';
@@ -15,6 +15,7 @@ const InterviewSession = ({ config, user, onEnd }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isEnding, setIsEnding] = useState(false);
   const [apiMessages, setApiMessages] = useState([]);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   
   const messagesEndRef = useRef(null);
   const { isRecording, sttError, toggleRecording } = useWhisper(config);
@@ -22,7 +23,7 @@ const InterviewSession = ({ config, user, onEnd }) => {
   // Initialize Session
   useEffect(() => {
     const initSession = async () => {
-      if (user?.uid && config) {
+      if (user?.uid && config && !sessionId) {
         saveInterviewSession(user.uid, config)
           .then(id => setSessionId(id))
           .catch(e => console.error('Session save error:', e));
@@ -32,22 +33,30 @@ const InterviewSession = ({ config, user, onEnd }) => {
       const initialApiMsgs = [{ role: 'system', content: systemPrompt }];
       setApiMessages(initialApiMsgs);
       
-      setMessages([{ role: 'ai', text: 'Initializing...' }]);
+      setMessages([{ role: 'ai', text: '' }]);
       setIsProcessing(true);
 
       try {
-        const response = await getGroqChatCompletion(initialApiMsgs);
-        setMessages([{ role: 'ai', text: response }]);
-        setApiMessages([...initialApiMsgs, { role: 'assistant', content: response }]);
-        speak(response);
+        let fullResponse = '';
+        await getGroqChatStream(initialApiMsgs, (chunk) => {
+          fullResponse = chunk;
+          setMessages([{ role: 'ai', text: chunk }]);
+        });
+        
+        setApiMessages([...initialApiMsgs, { role: 'assistant', content: fullResponse }]);
+        setIsSpeaking(true);
+        speak(fullResponse);
       } catch (e) {
-        setMessages([{ role: 'ai', text: `Error: ${e.message}` }]);
+        setMessages([{ role: 'ai', text: `Error: ${e.message}. Please ensure VITE_GROQ_API_KEY is set.` }]);
       }
       setIsProcessing(false);
     };
 
     initSession();
-    return () => cancelSpeech();
+    return () => {
+      cancelSpeech();
+      setIsSpeaking(false);
+    };
   }, [config, user]);
 
   // UI Helpers
@@ -75,17 +84,24 @@ const InterviewSession = ({ config, user, onEnd }) => {
     const userText = input.trim();
     setInput('');
     setIsProcessing(true);
+    cancelSpeech();
+    setIsSpeaking(false);
 
     const newMsgs = [...messages, { role: 'user', text: userText }];
     const newApiMsgs = [...apiMessages, { role: 'user', content: userText }];
-    setMessages([...newMsgs, { role: 'ai', text: 'typing' }]); // Internal tag for typing state
+    setMessages([...newMsgs, { role: 'ai', text: '' }]); 
     setApiMessages(newApiMsgs);
 
     try {
-      const response = await getGroqChatCompletion(newApiMsgs);
-      setMessages([...newMsgs, { role: 'ai', text: response }]);
-      setApiMessages([...newApiMsgs, { role: 'assistant', content: response }]);
-      speak(response);
+      let fullResponse = '';
+      await getGroqChatStream(newApiMsgs, (chunk) => {
+        fullResponse = chunk;
+        setMessages([...newMsgs, { role: 'ai', text: chunk }]);
+      });
+      
+      setApiMessages([...newApiMsgs, { role: 'assistant', content: fullResponse }]);
+      setIsSpeaking(true);
+      speak(fullResponse);
     } catch (e) {
       setMessages([...newMsgs, { role: 'ai', text: `Error: ${e.message}` }]);
     }
@@ -99,14 +115,18 @@ const InterviewSession = ({ config, user, onEnd }) => {
     try {
       if (sessionId) {
         const evaluation = await evaluateInterview(apiMessages, config);
-        await updateInterviewSession(sessionId, {
+        const sessionUpdate = {
           status: 'completed',
           duration: Math.max(1, Math.ceil(timer / 60)),
           score: evaluation.score,
           feedback: evaluation.feedback,
           suggestions: evaluation.suggestions,
           messages: apiMessages
-        });
+        };
+        await updateInterviewSession(sessionId, sessionUpdate);
+        setIsEnding(false);
+        onEnd(sessionUpdate);
+        return;
       }
     } catch (error) {
       console.error('Final session update error:', error);
@@ -120,6 +140,11 @@ const InterviewSession = ({ config, user, onEnd }) => {
     <div className="flex flex-col h-full bg-[#0c0c0c] text-white animate-in fade-in duration-500 -m-6 lg:-m-10">
       {/* Header */}
       <div className="flex justify-between items-center p-6 border-b border-white/5 bg-[#111]">
+        {!import.meta.env.VITE_GROQ_API_KEY && (
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 z-50 bg-orange-500 text-black px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest animate-bounce shadow-2xl">
+            ⚠️ API Key Missing: Set VITE_GROQ_API_KEY in .env.local
+          </div>
+        )}
         <div className="flex items-center gap-4">
           <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
           <div>
@@ -130,10 +155,18 @@ const InterviewSession = ({ config, user, onEnd }) => {
           </div>
         </div>
         <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/5">
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+            <span className="text-[9px] uppercase font-bold tracking-tighter text-gray-400">Live Connection</span>
+          </div>
           <span className="font-oswald text-xl text-orange-500">{formatTime(timer)}</span>
           <button 
             disabled={isEnding}
-            onClick={handleEndSession} 
+            onClick={() => {
+              if (window.confirm("Are you sure you want to end this session? Your performance will be analyzed.")) {
+                handleEndSession();
+              }
+            }} 
             className="px-6 py-2 bg-white/10 hover:bg-red-500/20 text-gray-300 hover:text-red-500 border border-white/10 hover:border-red-500/50 transition text-[10px] uppercase font-bold tracking-widest rounded-full disabled:opacity-50"
           >
             {isEnding ? 'Analyzing...' : 'End Session'}
@@ -150,20 +183,27 @@ const InterviewSession = ({ config, user, onEnd }) => {
                 ? 'bg-orange-500/10 border-orange-500/30 text-orange-50 rounded-br-none' 
                 : 'bg-white/5 border-white/10 text-gray-300 rounded-bl-none'
             }`}>
-              <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center justify-between mb-3">
                 <span className="text-[10px] uppercase tracking-widest font-bold text-gray-500">
-                  {msg.role === 'ai' ? 'Max' : 'Candidate'}
+                  {msg.role === 'ai' ? 'Max (AI Interviewer)' : 'Candidate (You)'}
                 </span>
+                {msg.role === 'ai' && isProcessing && msg.text === '' && (
+                   <div className="flex gap-1">
+                    <div className="w-1 h-1 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-1 h-1 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-1 h-1 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </div>
+                )}
+                {msg.role === 'ai' && isSpeaking && i === messages.length - 1 && (
+                  <div className="flex items-center gap-1 text-orange-500">
+                    <svg className="w-3 h-3 animate-pulse" fill="currentColor" viewBox="0 0 20 20"><path d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.983 5.983 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.984 3.984 0 00-1.172-2.828a1 1 0 010-1.415z"/></svg>
+                    <span className="text-[8px] uppercase font-bold tracking-widest">Speaking</span>
+                  </div>
+                )}
               </div>
-              {msg.text === 'typing' ? (
-                <div className="flex gap-1 py-2">
-                  <div className="w-1.5 h-1.5 bg-orange-500/50 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-1.5 h-1.5 bg-orange-500/50 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-1.5 h-1.5 bg-orange-500/50 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                </div>
-              ) : (
-                <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
-              )}
+              <p className="leading-relaxed whitespace-pre-wrap text-sm lg:text-base">
+                {msg.text || (msg.role === 'ai' && isProcessing ? 'thinking...' : '')}
+              </p>
             </div>
           </div>
         ))}

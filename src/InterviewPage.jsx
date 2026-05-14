@@ -3,17 +3,31 @@ import InterviewSession from './InterviewSession';
 import { getUserInterviews } from './services/interviewService';
 import NewInterviewModal from './components/interviews/NewInterviewModal';
 import InterviewCard from './components/interviews/InterviewCard';
+import FeedbackSummary from './components/interviews/FeedbackSummary';
 import { formatDate } from './utils/formatUtils';
 
-const InterviewPage = ({ user, interviews, setInterviews }) => {
+const InterviewPage = ({ user, interviews, setInterviews, refreshData }) => {
   const [view, setView] = useState('list'); // 'list' or 'session'
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sessionConfig, setSessionConfig] = useState(null);
+  const [sessionResult, setSessionResult] = useState(null);
 
   // Local fetch removed - data now flows from Dashboard
 
   if (view === 'session') {
-    return <InterviewSession config={sessionConfig} user={user} onEnd={() => setView('list')} />;
+    return <InterviewSession config={sessionConfig} user={user} onEnd={(result) => {
+      if (result) {
+        setSessionResult(result);
+        setView('summary');
+      } else {
+        setView('list');
+      }
+      refreshData?.();
+    }} />;
+  }
+
+  if (view === 'summary') {
+    return <FeedbackSummary result={sessionResult} onBack={() => setView('list')} />;
   }
 
   return (
