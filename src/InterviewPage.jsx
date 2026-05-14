@@ -3,6 +3,7 @@ import InterviewSession from './InterviewSession';
 import { getUserInterviews } from './services/interviewService';
 import NewInterviewModal from './components/interviews/NewInterviewModal';
 import InterviewCard from './components/interviews/InterviewCard';
+import { formatDate } from './utils/formatUtils';
 
 const InterviewPage = ({ user, interviews, setInterviews }) => {
   const [view, setView] = useState('list'); // 'list' or 'session'
@@ -83,7 +84,7 @@ const InterviewPage = ({ user, interviews, setInterviews }) => {
               <InterviewCard 
                 key={interview.id}
                 role={interview.targetRole} 
-                date={new Date(interview.createdAt?.toMillis ? interview.createdAt.toMillis() : Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} 
+                date={formatDate(interview.createdAt)} 
                 duration={`${interview.duration} mins`} 
                 score={interview.score} 
                 status={interview.status} 

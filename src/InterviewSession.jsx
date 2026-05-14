@@ -4,6 +4,7 @@ import { saveInterviewSession, updateInterviewSession } from './services/intervi
 import { speak, cancelSpeech } from './services/voiceService';
 import { generateSystemPrompt } from './utils/promptUtils';
 import { useWhisper } from './hooks/useWhisper';
+import { formatTime } from './utils/formatUtils';
 
 const InterviewSession = ({ config, user, onEnd }) => {
   const [messages, setMessages] = useState([]);
@@ -57,11 +58,6 @@ const InterviewSession = ({ config, user, onEnd }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const formatTime = (seconds) => {
-    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-    const s = (seconds % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
-  };
 
   // Handlers
   const handleVoiceToggle = async () => {

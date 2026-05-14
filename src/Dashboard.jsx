@@ -5,6 +5,8 @@ import StatCard from './components/common/StatCard';
 import ProgressBar from './components/common/ProgressBar';
 import PerformanceChart from './components/dashboard/PerformanceChart';
 import Sidebar from './components/layout/Sidebar';
+import Logo from './components/common/Logo';
+import { formatDate } from './utils/formatUtils';
 
 const Dashboard = ({ user, onLogout }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -33,9 +35,7 @@ const Dashboard = ({ user, onLogout }) => {
       {/* Header */}
       <header className="flex justify-between items-center mb-12 border-b border-white/5 pb-8">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 border-2 border-orange-500 rotate-45 flex items-center justify-center">
-             <div className="w-4 h-4 bg-orange-500 -rotate-45"></div>
-          </div>
+          <Logo size="lg" />
           <div>
             <h1 className="text-xl font-bold tracking-tighter uppercase font-oswald">Vantage Dashboard</h1>
             <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em]">Logged in as {user?.email}</p>
@@ -173,7 +173,7 @@ const Dashboard = ({ user, onLogout }) => {
                     <p className="text-[10px] text-gray-500 uppercase tracking-tighter mb-1">{activity.targetRole} • {activity.interviewType}</p>
                     <div className="flex justify-between text-[9px] uppercase tracking-widest">
                       <span className="text-gray-600">
-                        {new Date(activity.createdAt?.toMillis ? activity.createdAt.toMillis() : Date.now()).toLocaleDateString()}
+                        {formatDate(activity.createdAt)}
                       </span>
                       <span className="text-orange-500 font-bold">{activity.score}/100</span>
                     </div>

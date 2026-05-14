@@ -1,4 +1,5 @@
 import React from 'react';
+import Logo from '../common/Logo';
 
 const Sidebar = ({ isCollapsed, setIsCollapsed, activeView, setActiveView }) => {
   const menuItems = [
@@ -25,9 +26,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, activeView, setActiveView }) => 
       <div className={`p-6 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} border-b border-white/5 min-h-[88px]`}>
         {!isCollapsed && (
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 border-2 border-orange-500 rotate-45 flex items-center justify-center shrink-0">
-               <div className="w-3 h-3 bg-orange-500 -rotate-45"></div>
-            </div>
+            <Logo size="md" />
             <span className="font-oswald text-xl uppercase font-bold tracking-wider text-white">Vantage</span>
           </div>
         )}
