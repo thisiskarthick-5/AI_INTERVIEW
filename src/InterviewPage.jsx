@@ -1,111 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InterviewSession from './InterviewSession';
+import { getUserInterviews } from './services/interviewService';
+import NewInterviewModal from './components/interviews/NewInterviewModal';
+import InterviewCard from './components/interviews/InterviewCard';
 
-const NewInterviewModal = ({ isOpen, onClose, onStart }) => {
-  const [difficulty, setDifficulty] = useState('Intermediate');
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
-      <div className="bg-[#111] border border-white/10 rounded-2xl w-full max-w-lg p-8 relative shadow-2xl">
-        <button onClick={onClose} className="absolute top-6 right-6 text-gray-500 hover:text-white transition cursor-pointer">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-        
-        <h2 className="text-3xl font-oswald uppercase mb-6 text-white">Configure Session</h2>
-        
-        <div className="space-y-6">
-          <div>
-            <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-2 font-bold">Target Role</label>
-            <input type="text" placeholder="e.g. Senior Frontend Engineer" className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-orange-500 transition" />
-          </div>
-          
-          <div>
-            <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-2 font-bold">Interview Type</label>
-            <div className="grid grid-cols-2 gap-4">
-              <button className="bg-orange-500/10 border border-orange-500 text-orange-500 rounded-xl p-4 text-xs font-bold uppercase tracking-wider text-center cursor-pointer">Technical</button>
-              <button className="bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-white/30 rounded-xl p-4 text-xs font-bold uppercase tracking-wider text-center transition cursor-pointer">Behavioral</button>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-2 font-bold">Difficulty</label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {['Beginner', 'Intermediate', 'Advanced', 'Expert'].map(level => (
-                <button 
-                  key={level}
-                  onClick={() => setDifficulty(level)}
-                  className={`rounded-xl p-3 text-[10px] font-bold uppercase tracking-wider text-center transition cursor-pointer ${
-                    difficulty === level 
-                      ? 'bg-orange-500/10 border border-orange-500 text-orange-500 shadow-[0_0_10px_rgba(209,130,77,0.2)]' 
-                      : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-white/30'
-                  }`}
-                >
-                  {level}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-2 font-bold">Duration</label>
-            <select className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-orange-500 transition appearance-none cursor-pointer">
-              <option value="15" className="bg-[#111]">15 Minutes (Quick Prep)</option>
-              <option value="30" className="bg-[#111]">30 Minutes (Standard)</option>
-              <option value="60" className="bg-[#111]">60 Minutes (Full Round)</option>
-            </select>
-          </div>
-        </div>
-
-        <button 
-          onClick={onStart} 
-          className="w-full mt-8 bg-orange-500 text-black py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-orange-400 transition shadow-[0_0_15px_rgba(209,130,77,0.3)] cursor-pointer"
-        >
-          Start Mock Interview
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const InterviewCard = ({ role, date, score, status, duration }) => (
-  <div className="bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 group hover:border-white/20 transition cursor-pointer">
-    <div>
-      <div className="flex items-center gap-3 mb-2">
-        <h3 className="text-xl font-bold group-hover:text-orange-500 transition">{role}</h3>
-        {status === 'completed' ? (
-          <span className="px-2 py-1 bg-green-500/10 text-green-500 text-[10px] uppercase font-bold tracking-wider rounded">Completed</span>
-        ) : (
-          <span className="px-2 py-1 bg-orange-500/10 text-orange-500 text-[10px] uppercase font-bold tracking-wider rounded">In Progress</span>
-        )}
-      </div>
-      <div className="flex items-center gap-4 text-[10px] text-gray-500 uppercase tracking-widest">
-        <span>{date}</span>
-        <span className="w-1 h-1 bg-gray-700 rounded-full"></span>
-        <span>{duration}</span>
-      </div>
-    </div>
-    <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
-      {score && (
-        <div className="text-right">
-          <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Score</p>
-          <p className="text-2xl font-bold font-oswald text-orange-500">{score}/100</p>
-        </div>
-      )}
-      <button className="px-6 py-2 border border-white/10 hover:border-orange-500 hover:text-orange-500 transition text-[10px] uppercase font-bold tracking-widest rounded-full">
-        {status === 'completed' ? 'View Report' : 'Resume'}
-      </button>
-    </div>
-  </div>
-);
-
-const InterviewPage = () => {
+const InterviewPage = ({ user, interviews, setInterviews }) => {
   const [view, setView] = useState('list'); // 'list' or 'session'
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sessionConfig, setSessionConfig] = useState(null);
+
+  // Local fetch removed - data now flows from Dashboard
 
   if (view === 'session') {
-    return <InterviewSession onEnd={() => setView('list')} />;
+    return <InterviewSession config={sessionConfig} user={user} onEnd={() => setView('list')} />;
   }
 
   return (
@@ -113,7 +20,8 @@ const InterviewPage = () => {
       <NewInterviewModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
-        onStart={() => {
+        onStart={(config) => {
+          setSessionConfig(config);
           setIsModalOpen(false);
           setView('session');
         }} 
@@ -170,10 +78,22 @@ const InterviewPage = () => {
           <button className="text-[10px] text-gray-400 hover:text-white uppercase tracking-widest font-bold transition cursor-pointer">View All</button>
         </div>
         <div className="space-y-4">
-          <InterviewCard role="Senior React Developer" date="May 12, 2026" duration="45 mins" score={88} status="completed" />
-          <InterviewCard role="Product Manager" date="May 10, 2026" duration="60 mins" score={92} status="completed" />
-          <InterviewCard role="Frontend Engineer (Google)" date="May 14, 2026" duration="15 mins" score={null} status="in-progress" />
-          <InterviewCard role="Backend Developer (Node.js)" date="May 05, 2026" duration="50 mins" score={75} status="completed" />
+          {interviews.length > 0 ? (
+            interviews.map(interview => (
+              <InterviewCard 
+                key={interview.id}
+                role={interview.targetRole} 
+                date={new Date(interview.createdAt?.toMillis ? interview.createdAt.toMillis() : Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} 
+                duration={`${interview.duration} mins`} 
+                score={interview.score} 
+                status={interview.status} 
+              />
+            ))
+          ) : (
+            <div className="text-center p-8 border border-white/5 rounded-2xl">
+              <p className="text-gray-500 text-sm">No interviews found. Start a new mock interview to get began!</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
