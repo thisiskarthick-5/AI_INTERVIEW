@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import InterviewPage from './InterviewPage';
 import AnalyticsPage from './AnalyticsPage';
+import SettingsPage from './SettingsPage';
 import { getUserInterviews } from './services/interviewService';
 import StatCard from './components/common/StatCard';
 import ProgressBar from './components/common/ProgressBar';
@@ -196,7 +197,7 @@ const Dashboard = ({ user, onLogout }) => {
       
       {activeView === 'Interviews' && <InterviewPage user={user} interviews={interviews} setInterviews={setInterviews} refreshData={fetchInterviews} />}
       {activeView === 'Analytics' && <AnalyticsPage interviews={interviews} />}
-      {activeView === 'Settings' && <div className="flex items-center justify-center h-64 border border-dashed border-white/10 rounded-2xl text-gray-500 text-sm tracking-widest uppercase">Settings Coming Soon</div>}
+      {activeView === 'Settings' && <SettingsPage user={user} onLogout={onLogout} />}
       </div>
     </div>
   );
