@@ -1,0 +1,85 @@
+Interviewer: So let's welcome Wanchika Agarwal. She's a software engineer at Google. Hi Wanchika, how are you?
+
+Candidate: Hi, I'm good. How are you?
+
+Interviewer: I'm good too. So Wanchika is here for a mock interview with us. We'll be having a system design mock interview, and Wanchika, today I want you to design LeetCode. Okay? So I'll just type out the title first, and then we can sort of discuss some functional requirements and then move on to the non-functional requirements and so on. Does that work with you?
+
+Candidate: Yeah, that works. And let me also explain to my viewers if they don't know LeetCode—but to be honest, LeetCode doesn't need any introduction, and you might be already spending a lot of time there practicing coding interviews. LeetCode is majorly for software engineers, and we prepare all DSA questions there. Yeah, you can proceed.
+
+Interviewer: Okay, so firstly I'll start with the functional requirements. We can discuss them one by one in case there are any miscommunications or if you need to discuss further on certain requirements.
+
+Candidate: So, I think the first requirement would be that we are able to view a list of coding problems, right? The second one could be that we will view like a given problem and we can code a solution using any language of our choice.
+
+Interviewer: Yeah, so I can display: "View a given problem and code solution in any language of choice." Yeah, that's perfect.
+
+Candidate: The third one could be that we can submit the solution and we can get instant feedback, like how we get it on LeetCode—whether our code has passed all the test cases, is it failing, and so on.
+
+Interviewer: Uh-huh.
+
+Candidate: So actually, I was thinking of some out-of-scope requirements also. We can decide if you want to keep all of them as out-of-scope or we can put some of them in our scope. So one could be that we have some authorizations and profile creations in our LeetCode. Also, if we want to start like a premium service, we could have some payment gateway associated.
+
+Interviewer: I think for now we can skip those. But one more requirement that I want you to discuss is the LeetCode contests that happen bi-weekly and weekly. That is one of the very popular features of LeetCode—coding contests. So I would want you to also design a live leaderboard for those competitions.
+
+Candidate: Okay, live leaderboard for LeetCode bi-weekly/weekly. Correct?
+
+Interviewer: Yeah.
+
+Candidate: Okay, does this look okay to you?
+
+Interviewer: Yeah, now it's perfect. And we can assume that we don't need any kind of authentication; we can always assume that the user is already pre-logged in and we don't need to care about profiles and payments. We can skip all those and just focus on these functional requirements.
+
+Candidate: Sure. So actually, sometimes I also think about writing them as out-of-scope requirements, just so we are on the same page.
+
+Interviewer: Feel free to do that, yeah.
+
+Candidate: Okay, I'll write it as out-of-scope requirements. One, authentication and authorization and user profiles. Second is payment gateway for premium features. And another one could be—if we need to have analytics of each and every user associated with that profile, we can add that.
+
+Interviewer: Yeah, I'll skip that. We don't need those.
+
+Candidate: Okay, I'll just add it as out-of-scope. I think this looks okay to me. We can move to non-functional requirements if you also feel this is okay.
+
+Interviewer: Sure, let's discuss now the non-functional requirements.
+
+Candidate: Sure, so I'll just write some of the non-functional requirements. Off the top of my head, the first thing that I can think of is whether we want to have a very available system—like it should be highly available—or is it okay if the service goes down? In my opinion personally, it's better that the system is always available. We can go for an eventual consistency model.
+
+Interviewer: Okay, so when you say eventual consistency, I mean you're trying to say you'll put more weightage on availability over consistency. So when you say consistency, what exactly in the system you are saying is okay to have eventual consistency?
+
+Candidate: So one thing that could be okay to have eventual consistency is that if it takes more time for submission of the code to get the instant feedback—that is okay. But the service should not be down. All the test cases... if we do not get the answer for all the test cases instantly, but the service is available at all times, that is more important than us getting the exact correct answer on all the nodes associated with it.
+
+Interviewer: It sounds more like you want a low-latency platform—that you still get the answer quicker, maybe less than a second or two seconds, max five seconds you can have a time limit. But you want that system to be available irrespective of whether two users are seeing two different submission results for the same test cases or for the same code? Or is it like one user might see a thousand problems on the problem list and one user might see just ten less, maybe 990 problems?
+
+Candidate: Yes. So actually, according to me, for LeetCode it's more important that the website is available at all times. But the number of people seeing the number of submissions or the number of questions at a given time could vary by, say, plus or minus ten, for example. I mean, that could be eventually consistent. Let's say any new problem as it's added, some user might be seeing it or some might not be seeing depending on the deployment in the region or it's global. It's fine.
+
+Interviewer: Good for me.
+
+Candidate: One other thing that I can think of is that there should be some sort of security or isolation when it comes to the code that is being run by a user, so that it does not really affect the overall system—in the sense that if anyone wants to put in some malware while trying to run code on our terminal on LeetCode, they could eventually take down the whole service. So we want to keep that... some isolation should be there and there are some security features also available so that the service does not go down. Does that make sense?
+
+Interviewer: Yeah, so if I'm getting it correctly, you are saying that whenever a user or the client of LeetCode tries to submit their code and when we actually run those against our test cases, we have to make sure that each code is isolated and it does not disturb the other submissions and it doesn't affect our current system, right?
+
+Candidate: Correct, yeah.
+
+Interviewer: Okay, go on.
+
+Candidate: Yeah, "isolation of user code," it's better to use "user code." Perfect. We can just keep the points of the notes that we are making, don't have to be very verbose. And obviously the system has to be low-latency, so we can have that also as a requirement, like all of the submission results should be under, say, two seconds or five seconds.
+
+Interviewer: Yeah, definitely we want a low-latency system, and we can discuss later like how much time we want to cap it. I mean we do see a lot of "time limit exceeded," so we will deep dive later into that part—like when we want to halt the long-running operations.
+
+Candidate: Sure. I will just write—for each language, we could have some serialization or deserialization that would help to convert for that particular language's use case, so like C++ has hashmaps and Python has dictionaries and so on.
+
+Interviewer: Okay, but essentially the core problem would remain the same, right? So it doesn't make sense to have different test cases for different languages. So like we could just serialize a particular input array and then have some deserializer for a particular language and so on.
+
+Candidate: Makes sense, makes sense. Good. So that was all that I had for you, and do you have any final note that you want to make? Any change in the diagram or anything that you want to discuss?
+
+Interviewer: Yeah, so one thing that I wanted to discuss is that we would not want to have like a single database. We could have like a distributed database in the sense that we have a master-slave architecture wherein the particular database has some slaves or replicas, and in case this primary database goes down, we can promote either of the replicas to the master so that we don't result in a single point of failure. And for scaling also this is a good solution. And that is one thing that I would like to add. And this is for the problems database or submissions?
+
+Candidate: Both of the databases can... we can do the same for both of the databases. But for the problems database, I don't think we require it as much because we have a limited number of problems—I think only 4,000. So if in the future we are dealing with hundreds of thousands of problems, then definitely we could try that, but currently it's not required. But for the submissions database, it is definitely required.
+
+Interviewer: Thank you so much. It was a great system design mock interview. Thanks for taking out time for us. And if you have any final note for the viewers that you want to suggest—maybe something from your journey, your preparation journey or interview experience that you want to share?
+
+Candidate: So actually, I haven't given many system design interviews, or I think I haven't given any system design interview professionally yet. I have just given some mock system design interviews. And so for the final interview, I wouldn't have much thoughts for the viewers. But one resource actually that I would like to call out here is Hello Interview. So I've been following their page/blog/website for quite some time, and they have really interesting reads for both kinds of people—the kind of people who are generally interested in design and the kind of people who are only interested in design because they have an interview coming up. They have incredible videos also and their blogs are very good. Another resource that I found very helpful for design interviews was the YouTube channel by Shriansh Jain. In case anyone is interested, they can check it out. So that's something that kind of helped me. And please share your views with me as well if you have any other architecture or HLDs in mind with respect to LeetCode, or any feedback.
+
+Interviewer: I would appreciate you for sharing your honest resources that you're preparing for. And I would resonate on that—Hello Interview, I got an offer, and GKCS. Shriansh Jain, I haven't seen his videos, but I think these are some promising resources that you can follow. I'm also trying to come up with system design videos specifically for integration—it's in the pipeline. But yeah, thanks for being honest.
+
+Candidate: Sure, thank you.
+
+Interviewer: Yeah, thank you so much.

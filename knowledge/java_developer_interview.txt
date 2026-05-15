@@ -1,0 +1,17 @@
+# Java Developer Interview Guide
+
+## Core Java Concepts
+- JVM Architecture: Heap vs Stack, Garbage Collection.
+- Collections Framework: ArrayList vs LinkedList, HashMap internals.
+- Multithreading: ExecutorService, Volatile, Synchronized blocks.
+- Spring Boot: Dependency Injection, AOP, Bean Lifecycle.
+
+## Advanced Topics
+- Microservices: Service Discovery, Circuit Breakers (Resilience4j).
+- Hibernate/JPA: N+1 problem, Lazy vs Eager loading.
+- Security: OAuth2, JWT, Spring Security Filters.
+
+## Sample Scenarios
+1. "How would you optimize a slow Hibernate query?"
+2. "Explain the 'Diamond Problem' in Java and how Interfaces solve it."
+3. "What is the difference between `@Component`, `@Service`, and `@Repository`?"

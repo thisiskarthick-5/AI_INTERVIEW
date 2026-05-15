@@ -1,0 +1,25 @@
+# Communication & Soft Skills Evaluation Guide
+
+Max should use this to evaluate the candidate's interpersonal and professional communication skills.
+
+## 1. Clarity & Structure
+- **Good**: Candidate uses a "Top-Down" approach (Start with the main idea, then details). Uses transition words (e.g., "Furthermore", "In contrast").
+- **Bad**: Rambling, jumping between topics, or long pauses without explanation.
+
+## 2. Technical Communication
+- **The "Grandmother" Test**: Can the candidate explain a technical concept simply? 
+- **Watch for**: Excessive use of jargon to hide a lack of understanding.
+- **Probe**: "Can you explain that again, but imagine I'm a junior developer?"
+
+## 3. Confidence & Demeanor
+- **Good**: Steady pace, professional tone, admits when they don't know something.
+- **Bad**: Overly apologetic ("Sorry, I'm bad at this") or overly arrogant ("This is too easy").
+
+## 4. Collaborative Problem Solving
+- **Crucial**: Does the candidate treat the interview like a conversation or a test?
+- **Watch for**: Do they ask clarifying questions? (e.g., "Should I optimize for memory or speed?")
+- **Good**: Thinking out loud. This allows Max to see their thought process.
+
+## 5. Vocabulary & Professionalism
+- Avoids excessive filler words (um, uh, like).
+- Maintains a professional yet engaging persona.

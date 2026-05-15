@@ -1,0 +1,119 @@
+Interviewer: Good afternoon, Purvi. Please introduce yourself.
+
+Candidate: Good afternoon, sir. First of all, I want to thank you for giving me this opportunity to introduce myself. My name is Purvi Dwivedi and I belong to Udaipur, Rajasthan. I have completed my schooling from St. Mary's Convent Senior Secondary School with 70% and currently, I am pursuing my B.Tech from Gitanjali Institute of Technical Studies with an aggregate of 6.5 CGPA. I am a Computer Science student and my technical skills include Java and SQL. I am really interested in IT projects and have completed several projects through which I have learned a lot. Regarding my strengths, I am an adaptable person and a quick learner. My goal is to work in a leading IT firm.
+
+Interviewer: You mentioned you are an adaptable person. Can you adjust yourself as per the environment? For example, if you are asked to work from home, will you be comfortable?
+
+Candidate: Yes, sir. I think I am comfortable with that. Actually, I discovered myself more in these couple of months during the pandemic. We were at home and we didn't have so much pressure, which gave me time to explore more opportunities and update my skills.
+
+Interviewer: What do you know about our company?
+
+Candidate: Sir, your company is a global leader and is known for its creative work and global foundations. You also provide education to children through your social initiatives. I also know about your Gateway University program, which is quite popular among students.
+
+Interviewer: Can you tell me more about this Gateway University program?
+
+Candidate: The Gateway University program talks about the company's achievements and the new technologies the company is working on. It helps graduates to understand the company better and prepares them for the industry.
+
+Interviewer: You mentioned Gateway Group. Do you know about the different groups under it?
+
+Candidate: Yes, sir. There are different groups like Gateway Digital, Gateway Foundation, and Gateway Media. Each group has its own focus area, like technology, social work, or media services.
+
+Interviewer: That's good. Who is your best friend from school?
+
+Candidate: Sir, my best friend from school is someone I have known for a long time. We are still very close.
+
+Interviewer: And who is your best friend in college?
+
+Candidate: Sir, I have many good friends in college, but I wouldn't say there is one "best" friend. Everyone has their own opinions and mentality, and I try to get along with everyone.
+
+Interviewer: What do you like most about Udaipur?
+
+Candidate: I like the culture and the atmosphere of Udaipur the most. It's a very peaceful and beautiful city.
+
+Interviewer: What are the pros and cons of online learning platforms, which have become so popular recently?
+
+Candidate: The pros are that learning doesn't stop even during a pandemic. We can interact with teachers and learn from several applications. The cons could be that sometimes there is a lack of physical interaction and practical learning.
+
+Interviewer: Do you follow any sports?
+
+Candidate: Not particularly, sir.
+
+Interviewer: Did you hear about any recent news? For example, about Mahendra Singh Dhoni retiring?
+
+Candidate: Yes, sir, I heard about that recently.
+
+Interviewer: What are your long-term goals?
+
+Candidate: I want to work as a software engineer for the next five years. I am also thinking of pursuing an MBA later to improve my management, leadership, and communication skills. I want to continue with the same organization and grow in my field.
+
+Interviewer: Why an MBA after five years?
+
+Candidate: I believe that once I have technical experience, an MBA will help me move into management roles and handle projects more effectively.
+
+Interviewer: We are a digital transformation partner for more than 28 countries. What do you mean by digital transformation partner?
+
+Candidate: It means the company helps other organizations to move their business processes to digital platforms and use technology to improve their efficiency and growth.
+
+Interviewer: Why should we hire you?
+
+Candidate: Sir, I am a quick learner and I have a growth mindset. I am preparing myself for roles like web developer or full-stack developer. I am really interested in new technologies and I think my qualities like punctuality and leadership will help the company.
+
+Interviewer: Any questions for us?
+
+Candidate: Yes, sir. What kind of projects are usually assigned to freshers? And what is the work culture like?
+
+Interviewer: We assign projects based on your skills and interest. We have a very collaborative work culture where you can work with people from different parts of the country.
+
+Candidate: That sounds great. I would love to work with people from different backgrounds as it helps in learning and making new friends.
+
+Interviewer: How do you build trust in a team?
+
+Candidate: I think communication plays a major role in building trust. If we communicate clearly and honestly, it helps in avoiding misunderstandings and building strong professional relationships.
+
+Interviewer: Good. Now, let's talk about some technical aspects. Are you familiar with any new technologies?
+
+Candidate: I am learning about various technologies and looking for opportunities where I can apply my knowledge.
+
+Interviewer: What is the difference between a class and an object in Java?
+
+Candidate: A class is a blueprint or a template for creating objects, while an object is an instance of a class that has its own state and behavior.
+
+Interviewer: Can you explain the life cycle of multi-threading?
+
+Candidate: In multi-threading, a thread is created, then it goes to the runnable state, then running, and finally it can be blocked or terminated. Multiple threads can execute concurrently to perform multiple operations at the same time.
+
+Interviewer: What is the difference between multi-threading and multi-processing?
+
+Candidate: Multi-threading involves multiple threads within a single process sharing the same memory, while multi-processing involves multiple independent processes running on different processors.
+
+Interviewer: Are threads independent of each other?
+
+Candidate: Yes, threads are independent. If one thread encounters an exception, it doesn't affect the execution of other threads.
+
+Interviewer: Do you know about databases?
+
+Candidate: Yes, sir.
+
+Interviewer: Suppose you want to copy data from one table to another in ascending order. How would you do that?
+
+Candidate: We can use the INSERT INTO statement along with a SELECT query and an ORDER BY clause. For example: INSERT INTO Table2 SELECT * FROM Table1 ORDER BY Column1 ASC;
+
+Interviewer: How do you connect Java with a database?
+
+Candidate: We use JDBC (Java Database Connectivity) for that. We need to load the driver, establish the connection, create a statement, and then execute the query.
+
+Interviewer: What are the new features in recent Java versions?
+
+Candidate: Sir, there are several new features like lambda expressions, the stream API, and improved memory management. These features help in writing cleaner and more efficient code.
+
+Interviewer: That's good. Why is data structure important?
+
+Candidate: Data structures are fundamental for organizing and storing data efficiently so that it can be accessed and modified effectively. It's crucial for writing optimized algorithms.
+
+Interviewer: All right, Purvi. We are done with the interview. Do you have anything else to say?
+
+Candidate: I am very keen to learn and contribute to your organization. Thank you again for this opportunity.
+
+Interviewer: Thank you, Purvi. Your technical skills are good, but you need to work on your presentation skills. Don't ignore this as it is very important in a professional environment. All the best.
+
+Candidate: Thank you, sir. I will definitely work on that.

@@ -1,0 +1,21 @@
+# System Design Interview Guide
+
+## Key Principles
+- Scalability: Horizontal vs Vertical.
+- Availability: High Availability (HA), SLAs, SLIs.
+- Reliability: Error handling, retries, idempotent operations.
+
+## Common Architecture Patterns
+- Monolith vs Microservices.
+- Event-driven (Kafka, RabbitMQ).
+- Peer-to-Peer vs Client-Server.
+
+## Design Scenarios
+1. "Design a URL Shortener like Bitly."
+2. "Design a Notification System that handles millions of users."
+3. "Design a Rate Limiter for an API."
+
+## Evaluation Metrics
+- **Scalability**: Can the system handle 10x traffic?
+- **Cost**: Is the design cost-effective?
+- **Complexity**: Is it over-engineered?

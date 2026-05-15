@@ -1,0 +1,79 @@
+Interviewer: Okay, Priyanka, please introduce yourself.
+
+Candidate: Hello sir, myself Priyanka Gur. I'm from Pune and I'm currently pursuing my Bachelor's degree in Computer Science at Balaji Institute. Alongside my degree, I've enrolled in the data analyst course at Fusion Software Institute to strengthen my skills in data analysis, data manipulation, and interpretation. During the course, I have learned Python with essential libraries like NumPy, Pandas, Matplotlib, and Seaborn. These tools have helped me visualize and analyze data. I have also gained hands-on experience in creating meaningful charts and graphs to communicate insights clearly. I have learned Exploratory Data Analysis (EDA), where I focused on practicing trends, patterns, and outliers from the data. I'm enthusiastic about building a strong foundation as a data analyst and contributing to data-driven decision-making in the future. Thank you.
+
+Interviewer: Yeah, so what are the strengths and weaknesses you have?
+
+Candidate: My strengths are my willingness to learn and adapt quickly. I'm good at understanding concepts and I enjoy solving problems using data. My weakness is time management. Initially, I was struggling with time while balancing my studies and learning new tools, but I have started using planners and setting clear goals to improve my efficiency.
+
+Interviewer: Good, very good. So yeah, next question will be why you want to become a data analyst?
+
+Candidate: I want to be a data analyst because I am curious about how the work happens in the back end, I would say. I am interested because I like to work with meaningful data and finding out insights or trends. So I chose data analyst.
+
+Interviewer: Okay great. And what are the long-term and short-term goals you have?
+
+Candidate: My short-term goal is to gain all the skills that I'm learning in this data analyst course and to gain real-world experience. My long-term goal is to get a job as a senior analyst, leading projects, guiding junior analysts, and learning new tools and technologies in the upcoming future.
+
+Interviewer: Okay. Can you tell me why Python is very important for data analysts and data scientists?
+
+Candidate: Python is important because it has powerful libraries which are very important. They help data analysts and data scientists find insights and get the proper output. Also, if you want to handle a large amount of data, Python is very important for that and it will work efficiently.
+
+Interviewer: Okay great. So can you tell me about conditional statements? Why do we need to use conditional statements in Python?
+
+Candidate: We use conditional statements because if we want certain output from our data according to a required condition, then we use a conditional statement. We have the statements if, elif, and else.
+
+Interviewer: How do those if conditional statements work? Can you tell me the flow?
+
+Candidate: After if, we write elif and else. If the if condition is executed and is false, then the block will go to the elif condition. If that gets true, then it will execute. Otherwise, it executes the next block, like the next elif or finally the else block.
+
+Interviewer: If I have only an if condition—I don't have an else part or an elif part—how will that if statement execute?
+
+Candidate: We will give the condition as per our requirement in the if. If that condition is true, then it will give us the output.
+
+Interviewer: Suppose with the if condition I don't pass any comparison operator or condition. I'm just passing a number with the if. What will be the output? Will that block of code execute or not?
+
+Candidate: If we give a print statement, then only it will execute, I think.
+
+Interviewer: Okay. So with the if part we always pass a condition, and that condition will be evaluated for true or false. If you pass a number with the if, that number will be evaluated for true and false. If you give '1' with the if, the boolean value becomes true. If you give '10' or '20', what will be the boolean value? It will be true. The block of code will be executed. If there is a '0', that block of code will not be executed because '0' becomes false. So if you pass a non-zero number, the block will always execute.
+
+Candidate: Okay.
+
+Interviewer: Great. Can you give me a scenario where you will use if-else?
+
+Candidate: For an Instagram user ID, I would say. If the user gives a valid ID, the if condition will execute and we will login to Instagram. If the ID is wrong or incorrect, the else part will execute and say "login not successful."
+
+Interviewer: What about a scenario where you would use if, elif, and else?
+
+Candidate: I can take the example of a valid email ID. If we insert an email ID and it contains the '@' symbol and a '.', it is valid. If it contains those, we print "valid email ID." For other conditions, we can use elif, and otherwise, we say it is an invalid email ID.
+
+Interviewer: Can I use if-elif-else for the days of the week? Like if you pass '1' you get Monday, if you pass '2' you get Tuesday, etc.?
+
+Candidate: Yes, we can use it for that.
+
+Interviewer: Okay great. So my next question will be about lambda functions. What is a lambda function?
+
+Candidate: A lambda function is an anonymous function which is defined inline. It is a single-line expression written in a shorter syntax for quick or small operations.
+
+Interviewer: And how do filter functions work?
+
+Candidate: A filter function will filter out records from a dataset based on a specific condition. It evaluates to true or false, and if it satisfies the condition, it gives us that output.
+
+Interviewer: I'm giving you one condition: there is a list and from that list, I want even numbers. Should we use a lambda function there or a map function?
+
+Candidate: We will use a filter function for extracting the even numbers from the list. If we have numbers and we have to filter out records of even or odd, we use a filter function.
+
+Interviewer: Okay, so along with the filter, we can use lambda. When do we use a map function?
+
+Candidate: A map function is used when we have to apply a specific function or operation on each and every element in the iterable.
+
+Interviewer: Okay. And what is the difference between a user-defined function and a lambda function?
+
+Candidate: A user-defined function is created by the user with a name, while a lambda function is anonymous and is a single-line expression used for quick output.
+
+Interviewer: Okay great. Can you tell me the syntax of a lambda function verbally?
+
+Candidate: Since it is anonymous, we don't write a name. We write lambda, then parameters, then a colon, and after that, we write the expression or condition we want.
+
+Interviewer: Thank you so much.
+
+Candidate: Thank you, sir.

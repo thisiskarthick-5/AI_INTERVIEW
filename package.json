@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vectorize": "node scripts/process-docs.js"
   },
   "dependencies": {
+    "@xenova/transformers": "^2.17.2",
     "firebase": "^12.13.0",
     "groq-sdk": "^1.2.0",
     "react": "^19.2.6",

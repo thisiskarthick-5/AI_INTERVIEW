@@ -6,6 +6,7 @@ import { generateSystemPrompt } from './utils/promptUtils';
 import { useWhisper } from './hooks/useWhisper';
 import { formatTime } from './utils/formatUtils';
 import { evaluateInterview } from './services/evaluationService';
+import { getRelevantContext } from './services/knowledgeService';
 
 const InterviewSession = ({ config, user, onEnd }) => {
   const [messages, setMessages] = useState([]);
@@ -29,7 +30,9 @@ const InterviewSession = ({ config, user, onEnd }) => {
           .catch(e => console.error('Session save error:', e));
       }
 
-      const systemPrompt = generateSystemPrompt(config);
+      const context = getRelevantContext(config);
+      const systemPrompt = generateSystemPrompt(config, context);
+      
       const initialApiMsgs = [{ role: 'system', content: systemPrompt }];
       setApiMessages(initialApiMsgs);
       

@@ -1,0 +1,63 @@
+Interviewer: Tell me something about you.
+
+Candidate: Thank you for calling me. My name is Gauri Shrimali. I am from Udaipur, Rajasthan. I completed my schooling from St. Mary's Convent Senior Secondary School, Udaipur. I secured 90.4% in my 10th standard and 82.4% in my 12th standard. Currently, I am pursuing my Bachelor of Technology in Computer Science and Engineering from Techno India NJR Institute of Technology, Udaipur. My technical skills include programming in Java, Python, and C. I am also familiar with web development technologies like HTML, CSS, and JavaScript. I have completed one project and an internship, which will help me in my future career. I also participated in the Smart India Hackathon in 2020 and reached the final round. Regarding extracurricular activities, I love dancing—specifically classical dance—and I have represented my college in various dance competitions. I am also a member of the student club of my college. My success is the success of joining TCS. Thank you so much.
+
+Interviewer: Why TCS? Tell me five points which make you join TCS.
+
+Candidate: First, TCS is a very good multinational company. Second, it provides a great work-life balance—I have talked to many people who said that TCS has a very good work-life balance. Third, it is a great place to learn, especially for a fresher like me. Fourth, I will get to work with people of different personalities and learn from them. Lastly, TCS gives me a sense of security and values like integrity and equality, with no discrimination on any basis.
+
+Interviewer: Looking very nice. How do you deal with failure or setbacks?
+
+Candidate: I once appeared for an interview and was not selected. I realized that my technical skills were not as strong as the other candidates. So, I took it as a challenge, started preparing for the technical rounds, practiced coding every day, and improved my knowledge.
+
+Interviewer: Tell me, what are your future plans?
+
+Candidate: My future plan is to join a software company and work for a few years to gain experience and align my goals with the company's growth. Eventually, I want to see myself in a leadership position.
+
+Interviewer: What are the three important things that one should consider before joining any organization as a fresher?
+
+Candidate: First, the reputation and values of the company. Second, the work-life balance and work environment. Third, the learning opportunities and the latest technologies the company uses so that my technical skills do not become obsolete.
+
+Interviewer: Are you aware of any latest technologies?
+
+Candidate: Sir, I am not fully aware of the latest trends right now.
+
+Interviewer: Do you think you will be able to adapt to the requirements of the job?
+
+Candidate: Yes, sir. I am a quick learner and I am ready to work hard to meet the requirements of the job.
+
+Interviewer: Any questions for me?
+
+Candidate: No, sir. Thank you.
+
+Interviewer: Suppose you get offers from two companies—one is a startup and the other is a big company like TCS. Which one would you choose?
+
+Candidate: I would choose TCS because of the job security and the structured learning environment it provides, especially for a fresher. Security is more important for us at this stage.
+
+Interviewer: Which subjects are you most comfortable with?
+
+Candidate: Programming in C++ and Java.
+
+Interviewer: Let's have a small technical test then. Can you write a program to count the frequency of characters in a string?
+
+Candidate: Yes, sir. (Candidate writes the code).
+
+Interviewer: Can you explain the logic?
+
+Candidate: First, we take a string. We iterate through each character of the string. We use a counter or a map/dictionary to store the character as a key and its count as the value. Every time we encounter the same character, we increase its count.
+
+Interviewer: Can we use a switch-case for this?
+
+Candidate: Switch-case might be too long for all characters, so using a map or an array for indexing is better.
+
+Interviewer: What do you mean by encapsulation?
+
+Candidate: Encapsulation is a process of wrapping data and methods into a single unit, like a class. It is used for security purposes so that data cannot be accessed directly from outside the class.
+
+Interviewer: Do you know about storage classes?
+
+Candidate: Yes, sir. (Briefly discusses storage classes).
+
+Interviewer: Every work was good. You are a good candidate. All the best. For example, if someone gets a package of 1 crore from a company like Google but they don't have job security, they might be stressed. But in a stable company, you can work peacefully.
+
+Candidate: Thank you, sir.

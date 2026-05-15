@@ -1,0 +1,60 @@
+Interviewer: Okay, should we start with the interview?
+Candidate: Yes, sir.
+Interviewer: Okay, can you write an array? Write an array with elements 1, 2, 3, 4, 5, 6. What you have to do is find the product to gain the maximum number. Any two numbers' product should be a maximum. What will be the maximum product you can receive from two numbers? You have to write a function for it.
+Candidate: Okay, the maximum product between two numbers I can get from this array.
+
+[Coding session]
+
+Candidate: I think this is enough to gain the maximum product from two numbers. It will fetch the maximum number and the minimum number.
+Interviewer: Why would you want the minimum number?
+Candidate: Minimum? Oh, that makes sense. Maximum and the second largest. I will sort it in descending order. If I don't use the logic for a and b, it will sort lexically. So this will sort them in descending order. I will just return the first and the second elements multiplied.
+Interviewer: Okay, fine. Now, in a single line, can you please remove all the elements from the array?
+Candidate: I think array dot delete?
+Interviewer: No. I know array.pop removes one at the last index. Shift removes the first element.
+Candidate: No, sorry, I don't think I have an idea for a single-line method to clear an array.
+Interviewer: With the help of length you can set it to zero. Now, can you write two objects and merge them?
+Candidate: Yes, I can do this.
+Interviewer: Is it possible to have keys with the same name included even if they have different values?
+Candidate: No idea, sir.
+Interviewer: Can you tell me about the rest parameters?
+Candidate: The rest parameters just sum up all the remaining values in an array.
+Interviewer: Fine, give me an example.
+
+[Coding session]
+
+Interviewer: Close the terminal. What will be the output here?
+Candidate: x will take 10, so rest will take the remaining elements.
+Interviewer: What will be the type of the rest object?
+Candidate: Object.
+Interviewer: Correct. Now, tell me about the callback function.
+Candidate: It is a function which returns another function or takes another function as an argument.
+Interviewer: Can you tell me different scopes available in JavaScript?
+Candidate: Global scope, function scope, modular scope, and lexical scope.
+
+[Variable scope coding exercise]
+
+Interviewer: Tell me, what will be the output here?
+Candidate: 500.
+Interviewer: Why?
+Candidate: Var is function scoped, but sometimes behaves like a global scope. Let is scoped inside the block, so the value does not move out.
+Interviewer: Different looping structures in JavaScript?
+Candidate: For loop, while loop, do-while, for-of, for-in, and for-each.
+Interviewer: Difference between for-each and map?
+Candidate: In map, we transform every element and get a new array. For-each is used for side effects and doesn't return anything.
+Interviewer: Move to HTML. Difference between inline and block-level elements?
+Candidate: Block-level elements take up the entire width and cannot stack. Inline elements can align next to each other. You cannot give height or width to inline elements.
+Interviewer: Difference between meta tag and progress tag?
+Candidate: Progress tag shows task completion from zero to a final value. Meta tag is used for metadata, like initial values or configurations.
+Interviewer: Difference between em tag and i tag?
+Candidate: The major difference is semantic. Em is for emphasis, i is for decoration.
+Interviewer: Difference between link tag and anchor tag?
+Candidate: Link tag links external resources like CSS files. Anchor tag directs you to a different page or URL when clicked.
+Interviewer: Move to CSS. Difference between border and outline?
+Candidate: Border is part of the CSS box model and takes up space. Outline does not push other elements and is just a visual layer.
+Interviewer: Difference between pseudo-class and pseudo-elements?
+Candidate: Pseudo-classes use a single colon and are for states like hover. Pseudo-elements use double colons and access specific parts of an element, like after or before.
+Interviewer: What is the use of box-sizing property?
+Candidate: Border-box includes padding and border in the width calculation. Content-box only measures the content.
+Interviewer: Difference between class selector and universal selector?
+Candidate: Universal selector selects everything and has the lowest specificity. Class selector is used for grouping elements and has higher specificity.
+Interviewer: That's it for the interview. Any queries?

@@ -1,0 +1,16 @@
+# Software Engineer Interview Guide
+
+## Core Technical Competencies
+- Data Structures: Arrays, HashMaps, Trees, Graphs.
+- Algorithms: Sorting, Searching, Recursion, Dynamic Programming.
+- System Design: Load balancing, Caching, Database Indexing.
+
+## Typical Questions
+1. "How do you handle a massive increase in traffic to a single API endpoint?"
+2. "Explain the difference between a Process and a Thread."
+3. "Walk me through how you would debug a memory leak in a production environment."
+
+## What Max Should Watch For
+- **Clarification**: Does the candidate ask questions before diving in?
+- **Trade-offs**: Do they understand that every choice (e.g., SQL vs NoSQL) has a cost?
+- **Edge Cases**: Do they mention null checks, empty inputs, or large datasets?

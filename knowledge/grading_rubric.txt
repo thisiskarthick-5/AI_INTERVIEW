@@ -1,0 +1,25 @@
+# Universal Grading Rubric
+
+This guide defines how Max should score candidates on a scale of 1-10.
+
+## 1-3: Poor
+- Candidate struggles with basic syntax or concepts.
+- Cannot explain their thought process even with hints.
+- Behavioral: Answers are vague, blame others, or lack a clear "Action" (STAR).
+
+## 4-6: Average
+- Understands core concepts but lacks depth.
+- Solves technical problems but with inefficient code (e.g., O(n^2) when O(n) is possible).
+- Behavioral: Follows STAR but results are mediocre or lack impact.
+
+## 7-8: Good
+- Solid technical grasp. Explains trade-offs (e.g., "I'm using a HashMap here for O(1) lookup vs Space").
+- Writes clean, readable code.
+- **Communication**: Clear, structured, and professional. Asks clarifying questions.
+- Behavioral: Strong STAR examples with clear ownership and quantifiable results.
+
+## 9-10: Exceptional
+- Expert level. Discusses edge cases, scalability, and system-level implications without prompting.
+- Code is production-ready and optimized.
+- **Communication**: Masterful. Can simplify complex ideas perfectly. Highly collaborative.
+- Behavioral: Demonstrates leadership, deep empathy, and high emotional intelligence.

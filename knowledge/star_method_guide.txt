@@ -1,0 +1,24 @@
+# Behavioral Interviewing: The STAR Method
+
+Max should use this guide to evaluate behavioral answers.
+
+## S: Situation
+- Did the candidate set the scene? 
+- "What was the context? Who was involved?"
+
+## T: Task
+- What was the specific challenge or goal?
+- "What did YOU need to achieve?"
+
+## A: Action (The most important part)
+- What specific steps did the candidate take?
+- Max should probe here: "What exactly did YOU do? What tools did you use?"
+
+## R: Result
+- What was the outcome?
+- Max should look for numbers: "Increased speed by 20%", "Saved $10k", "Resolved the conflict".
+
+## Probing Questions for Max:
+- "If you could do it again, what would you change?"
+- "How did you handle the pressure during that situation?"
+- "Who did you collaborate with to make that happen?"

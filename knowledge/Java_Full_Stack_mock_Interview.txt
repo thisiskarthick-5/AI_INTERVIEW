@@ -1,0 +1,115 @@
+Interviewer: Okay, so hi Shweta, how are you?
+
+Candidate: I'm fine, sir.
+
+Interviewer: Okay, so Shweta, tell me about yourself and your technical skills.
+
+Candidate: Okay sir, good morning sir. First of all, my name is Shweta Pandey, I am from Wani. I have completed my bachelor's degree from Government College of Engineering, Yavatmal, and I am skilled in OOPs concepts, design patterns like Factory design pattern and Template design pattern, exception handling, collection framework, and Java 8, Java 17. And also, I use databases like PostgreSQL, MySQL. That's all about me, sir.
+
+Interviewer: Okay, so how you rate yourself in Java out of 10?
+
+Candidate: Java out of 10, I will rate myself eight.
+
+Interviewer: Eight, okay good. And in case of Spring Boot?
+
+Candidate: Also eight.
+
+Interviewer: Also eight, okay. So what are the dependency injections in the Spring Boot?
+
+Candidate: There are four different types of dependency injections: first is Field injection, second is Setter injection, third is Constructor injection, and fourth one is Lookup method injection.
+
+Interviewer: Lookup method injection, right. And which one is preferred apart from Lookup method injection—let's say three injections: Field injection, Setter injection, and Constructor injection?
+
+Candidate: It totally depends on the requirement. If we want dependency injection as mandatory, then we can go for Constructor injection. For optional, we can go for Setter injection. And Field injection is not preferable because it internally uses reflection, so it is time-consuming.
+
+Interviewer: Okay, so that reflection will impact on the performance?
+
+Candidate: Performance, definitely.
+
+Interviewer: Okay, perfect. Now, coming to the Core Java.
+
+Candidate: Yes.
+
+Interviewer: Okay, so what are the OOPs concepts?
+
+Candidate: There are four types of OOPs—firstly, OOPs means Object-Oriented Programming, which is based on the object paradigm. There are four pillars of OOPs: first is Encapsulation, second is Polymorphism, third is Inheritance, and fourth one is Abstraction. Encapsulation means binding the data into the single object so that no one can access the data from outside the class; we also provide setters and getters to access them. And the second is Inheritance—Inheritance means acquiring all the properties and functionalities from parent class to the child class; we can achieve inheritance with the help of extends and implements keywords. There are three different types of inheritance: multiple inheritance (through interfaces), single inheritance, and multi-level inheritance. The main purpose of inheritance is code reusability. And third one is Polymorphism—Polymorphism means "same name, different form"; we can achieve polymorphism with the help of method overriding and method overloading. And fourth one is Abstraction—Abstraction means hiding the internal implementations and showing the functionalities; we can achieve abstraction with the help of abstract class and interface. That's all about the OOPs concepts.
+
+Interviewer: So how we can achieve the abstraction with the help of abstract class and interface?
+
+Candidate: In interface, only abstract methods are present, so we can achieve that abstraction using abstract methods. And in abstract class, both abstract and non-abstract methods are present.
+
+Interviewer: No, wait, you said that abstraction means hiding the internal implementations and showing the functionalities. So where does it happen in the code? Like if I'm writing the interface and writing the abstract method, where are you hiding the implementation? Because it's an abstract method, right?
+
+Candidate: So when we, suppose if we are creating a UserService interface and we implement that into the classes, at that time we use abstract methods...
+
+Interviewer: That is fine, we are using the abstract methods. But where—let's say in case of inheritance, you are saying inheritance means acquiring all the properties from parent to the child. And in the code, you can write—in inheritance you can write one m1 method, let's say in parent you are writing one method called as m1 and to the child class you are overriding that method or inheriting that method, that is called as inheritance. So code level, in the code level, where are you hiding the implementations? You said that hiding the internal implementations, showing the functionality. So question is, next question is, how to achieve it? You said abstract class and interface, but where do we hide? You are just writing the abstract method, right?
+
+Candidate: We hide that method... um... sorry, I can't explain.
+
+Interviewer: Okay, so basically as I said already that abstraction means just hiding the implementation and showing the functionality. So every method in the Java, okay, every method in the Java is hiding the implementation, right? If you're calling any service method from the controller, then you don't need to know about the implementations of that internal, internals of that method. You just need to call the method. That is called as abstraction, okay? So make sure whenever you are telling anything, then whatever you are telling in the interview, then you should know each and everything, okay? But anyway, that is good. Okay, so the next question is, what is the difference between interface and abstract class?
+
+Candidate: First, we can declare interface with the help of interface keyword and abstract class we can declare with the help of abstract keyword. In interface, every method is a public abstract and every variable is a public static final. In abstract class, such types of implementations are not mandatory. In interface, only abstract methods are present (in traditional versions), and in abstract class, abstract and non-abstract both methods are present. And in interface, a constructor is not present, so we can't create the object of an interface. In abstract class, a constructor is present, but we use that constructor to initialize the state of the object.
+
+Interviewer: Good. Now, is multiple inheritance supported in Java?
+
+Candidate: No, sir. With the help of extends keyword, multiple inheritance is not supported in Java, but we can achieve it with the help of implements keyword.
+
+Interviewer: Implements keyword, perfect. Now coming to the next. Do you know collections?
+
+Candidate: Yes.
+
+Interviewer: Okay, so what is the difference between collection and array?
+
+Candidate: Array is fixed in size and collection is growable in nature. Array is used to represent the same type of data, and collection is used to represent different types of groups of elements. Array is faster in performance and collection is slower in performance.
+
+Interviewer: Okay, so coming to the Set, or tell me simply the types of collection.
+
+Candidate: The types of collections are List, Set, and Queue. List has multiple implementations like ArrayList, LinkedList, and Vector. Set has multiple implementations like HashSet, LinkedHashSet, and TreeSet.
+
+Interviewer: Okay, so tell me the difference between ArrayList and Vector.
+
+Candidate: ArrayList is non-synchronized, and Vector is synchronized.
+
+Interviewer: If you are using synchronized, it will impact on the performance because only one thread can access that synchronized part. So what is the solution for that?
+
+Candidate: Concurrent collections?
+
+Interviewer: Are you sure?
+
+Candidate: Sorry, sir, I can't recall it.
+
+Interviewer: Okay, so there is a solution called as a Re-entrant lock. Okay, Shweta, coming to the Java 8 questions. Okay, so what are the features of Java 8?
+
+Candidate: Functional interface, lambda expression, and stream APIs.
+
+Interviewer: So what is a lambda expression?
+
+Candidate: A lambda expression is a function without access modifier, without return type, and without method name. The main purpose of lambda expression is it provides implementations to the functional interface.
+
+Interviewer: Okay, good. What is a Stream API?
+
+Candidate: Stream API is a powerful feature of Java 8. It represents a sequence of objects and it allows developers to perform various operations like filtering, mapping, and sorting. It provides two types of operations: intermediate operations and terminal operations. Intermediate operations are used to configure the stream, and terminal operations are used to generate the result. And there are two types of streams: parallel stream and sequential stream.
+
+Interviewer: Okay, good. Let's say I have a number of employees, an employee object. I want to filter the employees whose salary is greater than 50,000. So how you do that in Java?
+
+Candidate: In Java, we can use the filter method.
+
+Interviewer: How? Just give me pseudo-code. Tell me the pseudo-code.
+
+Candidate: We can use the filter method and collectors... no.
+
+Interviewer: Okay, so you have to just use list.stream().filter(...) and then you have to provide a lambda expression for salary > 50000, that's it.
+
+Candidate: Yes.
+
+Interviewer: Okay, now what is a flatMap or the difference between the map and flatMap?
+
+Candidate: Sorry sir, not able to recall.
+
+Interviewer: What is the difference between parallel stream and stream?
+
+Candidate: Sequential stream is used to perform single operation on a single thread. Parallel stream divides the stream into multiple blocks and we can perform multiple operations on those multiple blocks simultaneously.
+
+Interviewer: Okay, anyway. So Shweta, you are almost good in Java and Spring Boot but still you need to improve some areas. For example, I asked you synchronization—so you know synchronization, but you are not able to talk on that perfectly. You talked but slightly some things are missing. You need to do that perfectly. Apart from this, let's say I'm asking you the disadvantage of synchronization; you told me, but what is the solution? And you gave the solution "concurrent collection," which is not entirely the specific answer I was looking for there. So whenever you are doing any topic, like synchronization or collection, make sure there will be a follow-up. If he is asking synchronization, the next question is what is the disadvantage? What is the problem? And the next follow-up will be: what is the solution on that? Right? So if you're doing any topic, then prepare for advantages, disadvantages, and if there is a disadvantage, then what is the solution? This will be the follow-up questions. Just do that and then you will be good. Okay, so thanks for giving time for the mock interview.
+
+Candidate: Okay, yes, thank you sir.

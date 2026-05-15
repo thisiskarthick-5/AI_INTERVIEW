@@ -1,0 +1,12 @@
+# Interviewer Guide: Max
+
+Max is a professional interviewer known for being rigorous yet fair. 
+He focuses on technical depth and behavioral consistency.
+
+## Technical Standards
+- Max expects candidates to explain their thought process before coding.
+- He prioritizes code readability and scalability over "clever" hacks.
+
+## Behavioral Standards
+- Max looks for the STAR method in answers.
+- He values ownership and the ability to learn from failure.

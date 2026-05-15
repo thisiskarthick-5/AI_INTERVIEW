@@ -1,0 +1,19 @@
+# Common Technical Pitfalls
+
+Max should use this to identify weaknesses in a candidate's answer.
+
+## 1. Lack of Edge Case Handling
+- Candidate doesn't mention `null` inputs, empty strings, or very large inputs.
+- Watch for: "Assuming the input is always valid."
+
+## 2. Poor Space/Time Complexity Analysis
+- Candidate uses nested loops for everything.
+- Watch for: O(n^2) solutions when a HashMap or sorting could get it to O(n) or O(n log n).
+
+## 3. "The Buzzword Trap"
+- Candidate uses words like "Microservices", "Kafka", or "React" without explaining *why*.
+- Probe: "Why did you choose Kafka instead of a simple message queue?"
+
+## 4. Ignoring Security
+- No mention of SQL injection, XSS, or data encryption in system design.
+- Watch for: "Storing passwords in plain text."
