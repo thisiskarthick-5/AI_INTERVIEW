@@ -6,6 +6,8 @@ const NewInterviewModal = ({ isOpen, onClose, onStart }) => {
   const [difficulty, setDifficulty] = useState('Intermediate');
   const [duration, setDuration] = useState('30');
 
+  const [enableSuggestions, setEnableSuggestions] = useState(false);
+
   if (!isOpen) return null;
 
   const handleStart = () => {
@@ -13,7 +15,8 @@ const NewInterviewModal = ({ isOpen, onClose, onStart }) => {
       targetRole: targetRole || 'Software Engineer',
       interviewType,
       difficulty,
-      duration: parseInt(duration)
+      duration: parseInt(duration),
+      enableSuggestions
     });
   };
 
@@ -86,6 +89,20 @@ const NewInterviewModal = ({ isOpen, onClose, onStart }) => {
               <option value="30" className="bg-[#111]">30 Minutes (Standard)</option>
               <option value="60" className="bg-[#111]">60 Minutes (Full Round)</option>
             </select>
+          </div>
+          <div className="pt-4 border-t border-white/5">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-widest text-white">AI Copilot Mode</h4>
+                <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-tighter">Get real-time tips during the session</p>
+              </div>
+              <button 
+                onClick={() => setEnableSuggestions(!enableSuggestions)}
+                className={`w-12 h-6 rounded-full transition-all relative ${enableSuggestions ? 'bg-orange-500' : 'bg-white/10'}`}
+              >
+                <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${enableSuggestions ? 'right-1' : 'left-1'}`} />
+              </button>
+            </div>
           </div>
         </div>
 

@@ -7,9 +7,13 @@ import { useWhisper } from './hooks/useWhisper';
 import { formatTime } from './utils/formatUtils';
 import { evaluateInterview } from './services/evaluationService';
 import { getRelevantContext } from './services/knowledgeService';
+import { getRealtimeSuggestion } from './services/suggestionService';
 
 const InterviewSession = ({ config, user, onEnd }) => {
   const [messages, setMessages] = useState([]);
+  const [suggestion, setSuggestion] = useState(null);
+  const [tipPage, setTipPage] = useState(0); // 0: Feedback, 1: Suggested Response
+  const [isSuggesting, setIsSuggesting] = useState(false);
   const [input, setInput] = useState('');
   const [timer, setTimer] = useState(0);
   const [sessionId, setSessionId] = useState(null);
@@ -85,7 +89,6 @@ const InterviewSession = ({ config, user, onEnd }) => {
     if (!input.trim() || isProcessing) return;
     
     const userText = input.trim();
-    setInput('');
     setIsProcessing(true);
     cancelSpeech();
     setIsSpeaking(false);
@@ -94,6 +97,17 @@ const InterviewSession = ({ config, user, onEnd }) => {
     const newApiMsgs = [...apiMessages, { role: 'user', content: userText }];
     setMessages([...newMsgs, { role: 'ai', text: '' }]); 
     setApiMessages(newApiMsgs);
+    setInput('');
+    setIsProcessing(true);
+
+    // Real-time Feedback (Triggered immediately after User response)
+    if (config.enableSuggestions) {
+      setIsSuggesting(true);
+      getRealtimeSuggestion(newApiMsgs, config).then(tip => {
+        setSuggestion(tip);
+        setIsSuggesting(false);
+      });
+    }
 
     try {
       let fullResponse = '';
@@ -212,6 +226,55 @@ const InterviewSession = ({ config, user, onEnd }) => {
         ))}
         <div ref={messagesEndRef} />
       </div>
+
+      {/* Suggestion Area */}
+      {config.enableSuggestions && (isSuggesting || (suggestion && (suggestion.feedback || suggestion.suggestion))) && (
+        <div className="px-6 lg:px-10 pb-4 animate-in slide-in-from-bottom-2 duration-300">
+          <div className="max-w-4xl mx-auto bg-orange-500/10 border border-orange-500/20 rounded-xl p-4 flex items-start gap-4">
+            <div className="p-2 bg-orange-500 rounded-lg text-black">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                {tipPage === 0 ? (
+                  <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1a1 1 0 112 0v1a1 1 0 11-2 0zM13 16v-1a1 1 0 112 0v1a1 1 0 11-2 0zM6.464 14.95a1 1 0 11-1.414 1.414l-.707-.707a1 1 0 011.414-1.414l.707.707zM17.243 16.535a1 1 0 01-1.414 0l-.707-.707a1 1 0 111.414-1.414l.707.707a1 1 0 010 1.414z"/>
+                ) : (
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                )}
+              </svg>
+            </div>
+            <div className="flex-1">
+              <div className="flex justify-between items-center mb-1">
+                <h4 className="text-[10px] font-bold uppercase tracking-widest text-orange-500">
+                  {tipPage === 0 ? 'Instant Feedback' : 'Suggested Response'}
+                </h4>
+                <div className="flex items-center gap-2">
+                  <span className="text-[8px] text-orange-500/50 uppercase font-bold">{tipPage + 1}/2</span>
+                  <div className="flex gap-1">
+                    <button 
+                      onClick={() => setTipPage(0)}
+                      disabled={tipPage === 0}
+                      className="p-1 hover:bg-orange-500/20 rounded disabled:opacity-20 text-orange-500 transition"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button 
+                      onClick={() => setTipPage(1)}
+                      disabled={tipPage === 1}
+                      className="p-1 hover:bg-orange-500/20 rounded disabled:opacity-20 text-orange-500 transition"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <p className="text-xs text-orange-100/80 leading-relaxed italic">
+                {isSuggesting ? 'Generating coach advice...' : (tipPage === 0 ? suggestion?.feedback : suggestion?.suggestion)}
+              </p>
+            </div>
+            <button onClick={() => setSuggestion(null)} className="text-orange-500/40 hover:text-orange-500">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Input Area */}
       <div className="p-6 bg-[#111] border-t border-white/5">
