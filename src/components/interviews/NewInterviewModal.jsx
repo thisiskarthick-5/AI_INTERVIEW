@@ -1,12 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const NewInterviewModal = ({ isOpen, onClose, onStart }) => {
   const [targetRole, setTargetRole] = useState('');
   const [interviewType, setInterviewType] = useState('Technical');
   const [difficulty, setDifficulty] = useState('Intermediate');
   const [duration, setDuration] = useState('30');
-
   const [enableSuggestions, setEnableSuggestions] = useState(false);
+
+  // Load defaults from localStorage when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const savedProfile = localStorage.getItem('vantage_profile');
+      if (savedProfile) {
+        const profile = JSON.parse(savedProfile);
+        if (profile.defaultRole) setTargetRole(profile.defaultRole);
+        if (profile.defaultDifficulty) setDifficulty(profile.defaultDifficulty);
+      }
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -19,6 +30,7 @@ const NewInterviewModal = ({ isOpen, onClose, onStart }) => {
       enableSuggestions
     });
   };
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">

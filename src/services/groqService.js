@@ -2,8 +2,10 @@ const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const MODEL = "llama-3.3-70b-versatile";
 
 const getApiKey = () => {
-  const key = import.meta.env.VITE_GROQ_API_KEY;
-  if (!key) throw new Error("VITE_GROQ_API_KEY is not set in .env.local");
+  const localKey = localStorage.getItem('vantage_groq_key');
+  const envKey = import.meta.env.VITE_GROQ_API_KEY;
+  const key = localKey || envKey;
+  if (!key) throw new Error("Groq API Key not found. Please set it in Settings.");
   return key;
 };
 
