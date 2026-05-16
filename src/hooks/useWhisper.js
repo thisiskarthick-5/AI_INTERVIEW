@@ -1,13 +1,17 @@
 import { useState, useRef } from 'react';
 
 /**
- * Custom hook for handling audio recording and transcription via Groq Whisper.
+ * Custom hook for handling audio recording and transcription via Groq Whisper
+ * with REAL-TIME interim feedback using the Web Speech API.
  */
 export const useWhisper = (config) => {
   const [isRecording, setIsRecording] = useState(false);
   const [sttError, setSttError] = useState('');
+  const [interimText, setInterimText] = useState('');
+  
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
+  const recognitionRef = useRef(null);
 
   const getSupportedMimeType = () => {
     const types = [
@@ -21,20 +25,50 @@ export const useWhisper = (config) => {
 
   const startRecording = async () => {
     setSttError('');
+    setInterimText('');
+    
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: { echoCancellation: true, noiseSuppression: true, sampleRate: 16000 }
       });
 
+      // 1. Setup MediaRecorder for high-accuracy Whisper
       const mimeType = getSupportedMimeType();
       const mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
-      
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
 
       mediaRecorder.ondataavailable = (e) => {
         if (e.data.size > 0) audioChunksRef.current.push(e.data);
       };
+
+      // 2. Setup Web Speech API for Real-time interim feedback
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        recognition.onresult = (event) => {
+          let currentInterim = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (!event.results[i].isFinal) {
+              currentInterim += event.results[i][0].transcript;
+            }
+          }
+          if (currentInterim) {
+            setInterimText(currentInterim);
+          }
+        };
+
+        recognition.onerror = (event) => {
+          console.warn('[RealtimeSTT] Recognition error:', event.error);
+        };
+
+        recognition.start();
+        recognitionRef.current = recognition;
+      }
 
       mediaRecorder.start(100);
       setIsRecording(true);
@@ -53,10 +87,18 @@ export const useWhisper = (config) => {
     return new Promise((resolve) => {
       if (!mediaRecorderRef.current) return resolve(null);
 
+      // Stop real-time recognition
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+        recognitionRef.current = null;
+      }
+
       mediaRecorderRef.current.onstop = async () => {
         const mimeType = mediaRecorderRef.current.mimeType;
         const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
         
+        setInterimText(''); // Clear interim text
+
         if (audioBlob.size < 500) {
           setSttError('Recording too short.');
           resolve(null);
@@ -107,5 +149,5 @@ export const useWhisper = (config) => {
     }
   };
 
-  return { isRecording, sttError, toggleRecording };
+  return { isRecording, sttError, interimText, toggleRecording, startRecording, stopRecording };
 };

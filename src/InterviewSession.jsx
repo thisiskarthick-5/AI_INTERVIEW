@@ -21,9 +21,13 @@ const InterviewSession = ({ config, user, onEnd }) => {
   const [isEnding, setIsEnding] = useState(false);
   const [apiMessages, setApiMessages] = useState([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isMuted, setIsMuted] = useState(() => {
+    const saved = localStorage.getItem('vantage_voice_settings');
+    return saved ? !JSON.parse(saved).autoSpeak : false;
+  });
   
   const messagesEndRef = useRef(null);
-  const { isRecording, sttError, toggleRecording } = useWhisper(config);
+  const { isRecording, sttError, interimText, toggleRecording, startRecording } = useWhisper(config);
 
   // Initialize Session
   useEffect(() => {
@@ -52,7 +56,13 @@ const InterviewSession = ({ config, user, onEnd }) => {
         
         setApiMessages([...initialApiMsgs, { role: 'assistant', content: fullResponse }]);
         setIsSpeaking(true);
-        speak(fullResponse);
+        speak(fullResponse, () => {
+          setIsSpeaking(false);
+          // Auto-turn on mic if not muted and recording isn't already active
+          if (!isMuted && !isRecording && !isEnding) {
+            startRecording();
+          }
+        });
       } catch (e) {
         setMessages([{ role: 'ai', text: `Error: ${e.message}. Please ensure VITE_GROQ_API_KEY is set.` }]);
       }
@@ -118,7 +128,12 @@ const InterviewSession = ({ config, user, onEnd }) => {
       
       setApiMessages([...newApiMsgs, { role: 'assistant', content: fullResponse }]);
       setIsSpeaking(true);
-      speak(fullResponse);
+      speak(fullResponse, () => {
+        setIsSpeaking(false);
+        if (!isMuted && !isRecording && !isEnding) {
+          startRecording();
+        }
+      });
     } catch (e) {
       setMessages([...newMsgs, { role: 'ai', text: `Error: ${e.message}` }]);
     }
@@ -177,8 +192,10 @@ const InterviewSession = ({ config, user, onEnd }) => {
             <span className="text-[9px] uppercase font-bold tracking-tighter text-gray-400">Live Connection</span>
           </div>
           <span className="font-oswald text-xl text-orange-500">{formatTime(timer)}</span>
+          
           <button 
             disabled={isEnding}
+
             onClick={() => {
               if (window.confirm("Are you sure you want to end this session? Your performance will be analyzed.")) {
                 handleEndSession();
@@ -211,12 +228,40 @@ const InterviewSession = ({ config, user, onEnd }) => {
                     <div className="w-1 h-1 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                 )}
-                {msg.role === 'ai' && isSpeaking && i === messages.length - 1 && (
-                  <div className="flex items-center gap-1 text-orange-500">
-                    <svg className="w-3 h-3 animate-pulse" fill="currentColor" viewBox="0 0 20 20"><path d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.983 5.983 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.984 3.984 0 00-1.172-2.828a1 1 0 010-1.415z"/></svg>
-                    <span className="text-[8px] uppercase font-bold tracking-widest">Speaking</span>
+                {msg.role === 'ai' && (
+                  <div className="flex items-center gap-3">
+                    {isSpeaking && i === messages.length - 1 && (
+                      <div className="flex gap-1 items-center">
+                        <div className="w-0.5 h-2 bg-orange-500 animate-[pulse_0.5s_ease-in-out_infinite]" />
+                        <div className="w-0.5 h-3 bg-orange-500 animate-[pulse_0.7s_ease-in-out_infinite]" />
+                        <div className="w-0.5 h-2 bg-orange-500 animate-[pulse_0.5s_ease-in-out_infinite]" />
+                      </div>
+                    )}
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const newMuted = !isMuted;
+                        setIsMuted(newMuted);
+                        if (newMuted) cancelSpeech();
+                        else if (i === messages.length - 1) speak(msg.text); // Replay last message if unmuting
+                        
+                        const saved = localStorage.getItem('vantage_voice_settings');
+                        const settings = saved ? JSON.parse(saved) : { aiVoice: 'Natural Male (Max)', speed: 1.0, autoSpeak: true };
+                        settings.autoSpeak = !newMuted;
+                        localStorage.setItem('vantage_voice_settings', JSON.stringify(settings));
+                      }}
+                      className={`p-1.5 rounded-lg transition-all ${isMuted ? 'text-gray-600 hover:text-red-400' : 'text-orange-500 hover:bg-orange-500/10'}`}
+                      title={isMuted ? "Unmute Voice" : "Mute Voice"}
+                    >
+                      {isMuted ? (
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" /></svg>
+                      ) : (
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                      )}
+                    </button>
                   </div>
                 )}
+
               </div>
               <p className="leading-relaxed whitespace-pre-wrap text-sm lg:text-base">
                 {msg.text || (msg.role === 'ai' && isProcessing ? 'thinking...' : '')}
@@ -280,10 +325,12 @@ const InterviewSession = ({ config, user, onEnd }) => {
       <div className="p-6 bg-[#111] border-t border-white/5">
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto relative">
           <input 
-            type="text" value={input} onChange={(e) => setInput(e.target.value)}
+            type="text" 
+            value={isRecording ? (input + (interimText ? ' ' + interimText : '')) : input} 
+            onChange={(e) => setInput(e.target.value)}
             disabled={isProcessing || isEnding}
-            placeholder={isProcessing ? "Max is typing..." : "Type your response..."}
-            className="w-full bg-white/5 border border-white/10 rounded-2xl pl-6 pr-32 py-4 text-white outline-none focus:border-orange-500 transition disabled:opacity-50"
+            placeholder={isProcessing ? "Max is typing..." : isRecording ? "Listening..." : "Type your response..."}
+            className={`w-full bg-white/5 border border-white/10 rounded-2xl pl-6 pr-32 py-4 outline-none transition disabled:opacity-50 ${isRecording ? 'text-orange-500/70 border-orange-500/30 font-medium' : 'text-white focus:border-orange-500'}`}
           />
           <div className="absolute right-2 top-2 flex gap-2">
             <button 
