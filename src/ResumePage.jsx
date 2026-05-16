@@ -1,52 +1,117 @@
 import React, { useState, useEffect } from 'react';
 import { saveResume, getUserResumes, analyzeResume } from './services/resumeService';
-import StatCard from './components/common/StatCard';
+import * as pdfjsLib from 'pdfjs-dist';
+
+// Import worker correctly for Vite
+import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 const ResumePage = ({ user }) => {
   const [resumes, setResumes] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [analysis, setAnalysis] = useState(null);
   const [fileName, setFileName] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (user?.uid) {
-      getUserResumes(user.uid).then(setResumes);
+      getUserResumes(user.uid).then(setResumes).catch(err => console.error("Load resumes error:", err));
     }
   }, [user]);
+
+  const extractTextFromPDF = async (arrayBuffer) => {
+    console.log('[ResumePage] Starting PDF extraction...');
+    try {
+      const loadingTask = pdfjsLib.getDocument({ 
+        data: arrayBuffer,
+        useWorkerFetch: false,
+        isEvalSupported: false 
+      });
+      
+      const pdf = await loadingTask.promise;
+      console.log(`[ResumePage] PDF loaded. Pages: ${pdf.numPages}`);
+      
+      if (pdf.numPages > 3) {
+        throw new Error(`Industry standard resumes should be 1-2 pages. Your document is ${pdf.numPages} pages long, which is likely to be rejected by ATS systems.`);
+      }
+      
+      let fullText = '';
+
+      
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items.map(item => item.str).join(' ');
+        fullText += pageText + '\n';
+        console.log(`[ResumePage] Parsed page ${i}/${pdf.numPages}`);
+      }
+      return fullText;
+    } catch (err) {
+      console.error("[ResumePage] PDF Extraction error:", err);
+      throw new Error("Failed to extract text from PDF. It might be corrupted or incompatible.");
+    }
+  };
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
+    console.log(`[ResumePage] File selected: ${file.name} (${file.type}, ${file.size} bytes)`);
+    setError('');
     setFileName(file.name);
     setIsUploading(true);
     setAnalysis(null);
 
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      const text = event.target.result;
-      try {
-        const result = await analyzeResume(text);
-        setAnalysis(result);
-        
-        await saveResume(user.uid, {
-          fileName: file.name,
-          atsScore: result.atsScore,
-          summary: result.summary,
-          analysis: result
-        });
-        
-        getUserResumes(user.uid).then(setResumes);
-      } catch (error) {
-        console.error("Upload/Analysis failed:", error);
-      } finally {
-        setIsUploading(false);
+    try {
+      let text = '';
+      if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+        const arrayBuffer = await file.arrayBuffer();
+        text = await extractTextFromPDF(arrayBuffer);
+      } else {
+        console.log('[ResumePage] Reading as plain text...');
+        text = await file.text();
       }
-    };
 
-    // For simplicity, we treat all as text. For PDF, you'd usually use a lib like pdfjs
-    // but in this environment we'll assume text/plain or markdown for the demo.
-    reader.readAsText(file);
+      console.log(`[ResumePage] Text extracted. Length: ${text.length} chars`);
+
+      if (!text || text.trim().length < 50) {
+        throw new Error("The resume seems too short or unreadable. Please upload a valid document.");
+      }
+
+      console.log('[ResumePage] Sending to Groq for analysis...');
+      
+      // Add a timeout to the analysis
+      const analysisPromise = analyzeResume(text);
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("Analysis timed out after 30 seconds. Please try again.")), 30000)
+      );
+
+      const result = await Promise.race([analysisPromise, timeoutPromise]);
+      console.log('[ResumePage] Analysis received:', result);
+      
+      // Update UI immediately
+      setAnalysis(result);
+      setIsUploading(false); // Stop loader now, don't wait for Firestore
+      
+      // Save to Firestore in the background
+      console.log('[ResumePage] Saving to Firestore (background)...');
+      saveResume(user.uid, {
+        fileName: file.name,
+        atsScore: result.atsScore,
+        summary: result.summary,
+        analysis: result
+      }).then(() => {
+        console.log('[ResumePage] Save complete.');
+        getUserResumes(user.uid).then(setResumes);
+      }).catch(err => {
+        console.error('[ResumePage] Background save failed:', err);
+      });
+
+    } catch (err) {
+      console.error("[ResumePage] Upload/Analysis failed:", err);
+      setError(err.message || "Something went wrong during analysis.");
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -81,6 +146,13 @@ const ResumePage = ({ user }) => {
             </div>
           </div>
 
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-red-500 text-xs flex items-center gap-3">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              {error}
+            </div>
+          )}
+
           {isUploading && (
             <div className="bg-white/5 border border-white/10 p-8 rounded-2xl flex items-center gap-6 animate-pulse">
               <div className="w-12 h-12 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin" />
@@ -91,7 +163,7 @@ const ResumePage = ({ user }) => {
             </div>
           )}
 
-          {analysis && (
+          {analysis && !isUploading && (
             <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
                {/* Analysis Result */}
                <div className="bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-3xl p-8">

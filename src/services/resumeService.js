@@ -40,13 +40,18 @@ export const getUserResumes = async (userId) => {
  */
 export const analyzeResume = async (resumeText) => {
   const prompt = `
-    Analyze the following resume text for ATS (Applicant Tracking System) compatibility and professional quality.
+    Analyze the following text to determine if it is a professional resume. 
+    
+    IMPORTANT RULES:
+    1. If the text is NOT a resume (e.g., it is study material, a book, notes, or unrelated content), return an "atsScore" of 0 and set the "summary" to "This document does not appear to be a professional resume."
+    2. If it IS a resume, evaluate it for ATS compatibility and professional quality.
     
     RESUME TEXT:
     ${resumeText}
 
     Provide an evaluation in JSON format:
     {
+      "isResume": (boolean),
       "atsScore": (0-100),
       "summary": (short 2-sentence summary),
       "strengths": [list of 3 strengths],
@@ -54,6 +59,7 @@ export const analyzeResume = async (resumeText) => {
       "questions": [list of 5 highly relevant interview questions based on this resume]
     }
     Return ONLY the JSON.
+
   `;
 
   try {
@@ -61,16 +67,14 @@ export const analyzeResume = async (resumeText) => {
       { role: 'system', content: 'You are a senior technical recruiter and ATS expert. Output only valid JSON.' },
       { role: 'user', content: prompt }
     ]);
-    const cleanJson = response.replace(/```json|```/g, '').trim();
-    return JSON.parse(cleanJson);
+    // Robust JSON extraction
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error("Could not find valid analysis data in AI response.");
+    
+    return JSON.parse(jsonMatch[0]);
   } catch (error) {
     console.error("Analysis error:", error);
-    return {
-      atsScore: 70,
-      summary: "Good resume structure but could benefit from more quantitative achievements.",
-      strengths: ["Clear contact info", "Strong technical stack", "Good formatting"],
-      weaknesses: ["Missing metrics", "Vague job descriptions", "No portfolio link"],
-      questions: ["Walk me through your most complex project.", "How do you handle technical debt?", "Describe a time you failed.", "What's your preferred tech stack?", "How do you stay updated?"]
-    };
+    throw new Error(error.message || "The AI could not analyze this resume. Please check your API key or file content.");
   }
 };
+
